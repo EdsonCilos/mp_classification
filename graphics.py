@@ -147,7 +147,7 @@ def log_loss_table():
 
 def log_loss_row(name, alpha = 1e-4):
   
-    df = pd.read_csv(os.path.join('mhv_data', name,'total_score.csv'))
+    df = pd.read_csv(os.path.join('mccv_data', name,'total_score.csv'))
 
     return [np.mean(df[df.columns[1]]), np.std(df[df.columns[1]])]
 
@@ -177,7 +177,7 @@ def _total_score_plot(name_list, main_name, alpha):
 
     for name in name_list:
         
-        df = pd.read_csv(os.path.join('mhv_data', name,'total_score.csv'))
+        df = pd.read_csv(os.path.join('mccv_data', name,'total_score.csv'))
         
         n = df.shape[0]
         
@@ -248,7 +248,7 @@ def total_score_plot(df_tuples, name):
 
 def best_model_results(model_name = 'SVC_linear_0.002'):
     
-    path = os.path.join('mhv_data', model_name)
+    path = os.path.join('mccv_data', model_name)
     
     probability_heatmap(pd.read_csv(os.path.join(path, 'probability.csv')),
                         model_name)

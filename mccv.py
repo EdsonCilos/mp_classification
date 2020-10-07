@@ -25,7 +25,7 @@ def results_total(X, name, sufix, temp=True): #Arrumar!
    posfix = '_temp' if temp else '' 
     
    filepath = os.path.join(os.getcwd(),  
-                           'mhv_data',
+                           'mccv_data',
                            name,
                            sufix +  posfix + '.csv')
    
@@ -39,7 +39,7 @@ def results(X, name, sufix, temp=True):
     posfix = '_temp' if temp else '' 
     
     filepath = os.path.join(os.getcwd(),  
-                           'mhv_data',
+                           'mccv_data',
                            name,
                            sufix + posfix + '.csv')
    
@@ -106,7 +106,7 @@ while(do):
         
         b = False
         
-        folder = os.path.join('mhv_data', name)
+        folder = os.path.join('mccv_data', name)
         ts = os.path.join(folder, "total_score_temp.csv")
         prob = os.path.join(folder, "probability_temp.csv")
         cm = os.path.join(folder, "cross_matrix_temp.csv")

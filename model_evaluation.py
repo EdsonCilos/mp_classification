@@ -63,7 +63,7 @@ def final_test():
     
                         
 
-def mhv_all_data():
+def mccv_all_data():
     
     #Load and prepare the dataset
     dataset = pd.read_csv(os.path.join('data','D4_4_publication.csv'))
@@ -106,7 +106,7 @@ def mhv_all_data():
                      ])
      
     
-    return _results(rows, total_score, 'final_model_mhv_all_data', encoder),\
+    return _results(rows, total_score, 'final_model_mccv_all_data', encoder),\
             np.array(total_score).mean(axis=0)
 
 def _results(detailed_score_rows, total_score, result_name, encoder):
