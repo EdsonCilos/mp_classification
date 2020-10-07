@@ -1,2 +1,2 @@
 # mp_classification
-Repository for the ocean microplastic classifition project.
+Repository for the ocean microplastic classification project.
