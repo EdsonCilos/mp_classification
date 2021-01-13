@@ -320,3 +320,60 @@ def detailed_score_heatmap(df, name):
     fig.savefig(os.path.join('results', name + '_detailed_score.png'),
                 bbox_inches = "tight")
     
+    
+
+def final_table(name = 'SVC_linear_0.002'):
+        
+    names, classes = classes_names()
+        
+    ked_et_al = {'Cellulose acetate': 0.97,    
+                     'Cellulose like': 0.65, 
+                     'Ethylene propylene rubber': 0.76, #ok
+                     'Morphotype 1': 0.89, 
+                     'Morphotype 2': 0.88, 
+                     'PEVA': 0.74, 
+                     'Poly(amide)': 1, #ok
+                     'Poly(ethylene)' : 1, 
+                     'Poly(ethylene) + fouling' : 0.88,
+                     'Poly(ethylene) like' : 0.69, #ok
+                     'Poly(propylene)' : 0.99, 
+                     'Poly(propylene) like' : 0.51, #ok
+                     'Poly(styrene)' : 0.99,  
+                     'Unknown' : 0 }
+    w0 = []
+        
+    for n in names:
+        w0.append(ked_et_al[n])
+            
+    w0 = np.array(w0)
+        
+    #Load model's sensitivity mccv data
+    df1 = pd.read_csv(os.path.join('mccv_data', name,'detailed_score.csv'))
+    w1 = df1.mean(axis=0).values.reshape(classes, 4)
+    w1 = np.around(w1, decimals=3)[:, 0] 
+        
+    #Load model's sensitivity test result
+    df2 = pd.read_csv(os.path.join('results','final_test_detailed_score.csv'))
+    w2 = df2.mean(axis=0).values.reshape(classes, 4)
+    w2 = np.around(w2, decimals=3)[:, 0] 
+    
+    w = np.stack((w0, w1, w2), axis=0)
+    
+    df = pd.DataFrame(data = w,
+                        columns= names,
+                        index = ["Kedzierski et. al", 
+                                 "SVC MCCV", 
+                                 "SVC Final test"])
+    
+    fig, ax = plt.subplots(figsize=(12, 5))
+    ax.set_title('Sensitivity comparison')
+
+    sns.heatmap(df,
+                annot=True, linewidths= 0.05, cmap='YlGnBu', ax = ax)
+    
+    fig.savefig(os.path.join('results', name + '_final_table.png'),
+                bbox_inches = "tight")
+
+        
+    return df
+        
