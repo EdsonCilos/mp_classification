@@ -93,7 +93,7 @@ def gs_heatmap():
         
         ax.set_title('Best model: ' + name )
     
-    fig.savefig(os.path.join(results_path, 'gs_log_loss.png'),
+    fig.savefig(os.path.join(results_path, 'gs.png'),
                 bbox_inches = "tight")
     
     return df_list
@@ -322,7 +322,7 @@ def detailed_score_heatmap(df, name):
     
     
 
-def final_table(name = 'SVC_linear_0.002'):
+def final_table():
         
     names, classes = classes_names()
         
@@ -346,9 +346,14 @@ def final_table(name = 'SVC_linear_0.002'):
         w0.append(ked_et_al[n])
             
     w0 = np.array(w0)
+    
+    
         
     #Load model's sensitivity mccv data
-    df1 = pd.read_csv(os.path.join('mccv_data', name,'detailed_score.csv'))
+    df1 = pd.read_csv(os.path.join('results', 
+                                  'final_model_mhv_all_data_detailed_score.csv'),
+                      index_col=0)
+                                       
     w1 = df1.mean(axis=0).values.reshape(classes, 4)
     w1 = np.around(w1, decimals=3)[:, 0] 
         
@@ -371,7 +376,8 @@ def final_table(name = 'SVC_linear_0.002'):
     sns.heatmap(df,
                 annot=True, linewidths= 0.05, cmap='YlGnBu', ax = ax)
     
-    fig.savefig(os.path.join('results', name + '_final_table.png'),
+    fig.savefig(os.path.join('results', 
+                             'SVC_linear_0.002' + '_final_table.png'),
                 bbox_inches = "tight")
 
         
