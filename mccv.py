@@ -3,7 +3,7 @@
 """
 Created on Fri Jul 24 08:51:22 2020
 
-@author: edson
+@author: Edson Cilos
 """
 import pickle
 import pandas as pd
@@ -18,7 +18,18 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import log_loss
 from sklearn.svm import SVC 
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.base import clone
 from utils import build_row
+
+#load project modules
+from neural_search import build_model
+
+from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
+from tensorflow.keras.callbacks import EarlyStopping
+
+
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 def results_total(X, name, sufix, temp=True): #Arrumar!
  
@@ -53,10 +64,10 @@ while(do):
     
     simulate = False
     
-    print("Choose an option: \n \n 0 - Leave \n 1- SVC \n 2 - RF \n ")
+    print("Choose an option: \n \n 0 - Leave \n 1- SVC \n 2 - RF \n 3 - NN \n")
     n= int(input("input: "))
     
-    model = None
+    base_model = None
     
     name = ''
     
@@ -69,7 +80,7 @@ while(do):
         print("Support Vector Machine selected")
         kernel = input("Type the kernel name: ")
         c = float(input("Type the regularization parameter C: "))
-        model = SVC(kernel = kernel, C = c, probability = True)
+        base_model = SVC(kernel = kernel, C = c, probability = True)
         name =  "_".join(["SVC", kernel, str(c)])
         simulate = True
         
@@ -77,11 +88,58 @@ while(do):
         
          print("Random Forest selected \n")
          estimators = int(input("Type the number of estimators: \n"))
-         model = RandomForestClassifier(n_estimators=estimators, 
+         base_model = RandomForestClassifier(n_estimators=estimators, 
                                         criterion = 'entropy')
 
          name =  "_".join(["RF", str(estimators)])
          simulate = True
+         
+    elif(n == 3):
+        
+         print("Neural Network Selected selected \n")
+         layers = int(input("Type the number of hidden layers: \n"))
+         neurons = int(input("Type the number of neurons: \n"))
+         momentum = float(input("Momentum value: \n"))
+         lr = float(input("Learning rate: \n"))
+         m = int(input("Select the activation function: \n 1 - Sigmoid \n \n 2 - Tanh \n"))
+         
+         activation = ''
+         go = False
+         
+         if(m == 1):
+             activation = 'sigmoid'
+             go = True
+             
+         elif(m == 2):
+             activation = 'tanh'
+             go = True
+         
+         if(go):
+            
+            params = {'n_hidden' : layers,
+                      'n_neurons' : neurons, 
+                      'momentum' : momentum, 
+                      'learning_rate' : lr, 
+                      'act' : activation
+                      }
+
+            
+            base_model = KerasClassifier(build_model, 
+                                    epochs = 1000,
+                                    callbacks = [EarlyStopping(monitor='loss', 
+                                                            patience= 3,
+                                                            min_delta=0.001
+                                                            )],
+                                    **params
+                                 )
+            
+            
+            name_list = ['NN', activation] + [str(x) for x in 
+                                              [layers, neurons, momentum, lr]]
+            
+            name =  "_".join(name_list)
+            
+            simulate = True         
         
     else:
         print("Option not available")
@@ -147,7 +205,7 @@ while(do):
                     detailed_score = []
             else:
                 
-                b= True
+                b = True
                 
         if(b): 
             results_total(total_score, name, 'total_score')
@@ -187,19 +245,19 @@ while(do):
             ros = RandomOverSampler()
             X_train, y_train = ros.fit_resample(X_train, y_train)
             
+            model = clone(base_model)
             model.fit(X_train, y_train)
-            
             
             predict_array = model.predict(X_val)
             predicted_prob = model.predict_proba(X_val)
-    
+                
             total_score.append(
                     [log_loss(y_train, model.predict_proba(X_train)),
                      log_loss(y_val, predicted_prob),
                      accuracy_score(np.array(y_train), model.predict(X_train)),
                      accuracy_score(np.array(y_val), predict_array)
                      ])
-                
+            
             flatten_probabilities = []
             
             flatten_cross = []

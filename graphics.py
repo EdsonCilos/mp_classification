@@ -170,6 +170,10 @@ def total_score_plot_all(alpha = 1e-4):
              'RF_1000'
              ],'RF', alpha)
     
+    _total_score_plot(['NN_sigmoid_1_50_0.1_0.1',
+             'NN_tanh_2_150_0.1_0.01',
+             ],'NN', alpha = 1e-4)
+    
     
 def _total_score_plot(name_list, main_name, alpha):
     
@@ -221,6 +225,7 @@ def total_score_plot(df_tuples, name):
     fig = plot.get_figure()
     
     fig.savefig(os.path.join('results', name + '_cross_entropy.png'), 
+                dpi = 1200,
                 bbox_inches = "tight")
     
     plt.show()
@@ -239,7 +244,8 @@ def total_score_plot(df_tuples, name):
 
     fig = plot.get_figure()
     
-    fig.savefig(os.path.join('results', name + '_accuracy.png'), 
+    fig.savefig(os.path.join('results', name + '_accuracy.png'),
+                dpi = 1200,
                 bbox_inches = "tight")
     
     plt.show()
@@ -272,6 +278,7 @@ def probability_heatmap(df, name):
     sns.heatmap(prob_frame, annot=True, linewidths= 1, cmap="YlGnBu", ax = ax)
     ax.set_title('True class v.s. Predicted Probability Class')
     fig.savefig(os.path.join('results', name + '_probability.png'),
+                dpi = 1200,
                 bbox_inches = "tight")
     
 def cross_heatmap(df, name):
@@ -292,6 +299,7 @@ def cross_heatmap(df, name):
     ax.set_title('True class v.s. Predicted Class (mean)')
     
     fig.savefig(os.path.join('results', name + '_cross_prediction.png'),
+                dpi = 1200,
                 bbox_inches = "tight")
 
 def detailed_score_heatmap(df, name):
@@ -328,16 +336,16 @@ def final_table():
         
     ked_et_al = {'Cellulose acetate': 0.97,    
                      'Cellulose like': 0.65, 
-                     'Ethylene propylene rubber': 0.76, #ok
+                     'Ethylene propylene rubber': 0.76, 
                      'Morphotype 1': 0.89, 
                      'Morphotype 2': 0.88, 
                      'PEVA': 0.74, 
-                     'Poly(amide)': 1, #ok
+                     'Poly(amide)': 1, 
                      'Poly(ethylene)' : 1, 
                      'Poly(ethylene) + fouling' : 0.88,
-                     'Poly(ethylene) like' : 0.69, #ok
+                     'Poly(ethylene) like' : 0.69, 
                      'Poly(propylene)' : 0.99, 
-                     'Poly(propylene) like' : 0.51, #ok
+                     'Poly(propylene) like' : 0.51, 
                      'Poly(styrene)' : 0.99,  
                      'Unknown' : 0 }
     w0 = []
