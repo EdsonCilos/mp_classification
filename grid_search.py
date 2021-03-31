@@ -14,6 +14,7 @@ import numpy as np
 from scipy.signal import savgol_filter
 
 #Sklearn modules
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.dummy import DummyClassifier
@@ -48,23 +49,39 @@ class Savgol_transformer(BaseEstimator, TransformerMixin):
     def transform(self, X, y = None ):
         return savgol_filter(X, self.window, self.degree)
     
-def build_pipe(pca = True, over_sample = True):
+def build_pipe(scaler = 'std', pca = True, over_sample = True):
     
     prefix = ''
     
     pre_pipe =[('filter', Savgol_transformer(11, 10)),
-             ('scaler', StandardScaler()),
              ('estimator', DummyClassifier())
              ]
     
-    if(pca):
+    dim_red_position = 1
+    
+    scaler_dictionary = {
+        'std' : StandardScaler(), 
+        'minmax' : MinMaxScaler()
+        }
+    
+    if(scaler in scaler_dictionary):
         
-        prefix += 'pca_'
+        if scaler == 'minmax':
+            prefix += 'minmax_'
+            
+        pre_pipe.insert(1, ('scaler', scaler_dictionary[scaler]))        
+        dim_red_position += 1
         
-        pre_pipe.insert(2, ('dim_red', 
-                            PCA(n_components = 0.99, random_state = seed)
-                            ))
-        
+    else: 
+        print('No scaler was selected. Some algoritms may not work well')
+        prefix += 'noscaler_'
+                
+    if(pca):        
+        prefix += 'pca_'        
+        pre_pipe.insert(dim_red_position,
+                        ('dim_red', 
+                         PCA(n_components = 0.99, random_state = seed)
+                         ))
     if(over_sample):
         
        prefix += 'over_'
@@ -144,14 +161,16 @@ def classical_grid():
 
     
     
-def search(pca = True, over_sample = True, 
+def search(scaler = 'std', pca = True, over_sample = True, 
            param_grid = classical_grid(), prefix = '',  n_jobs = -2):
     
     X_train = pd.read_csv(os.path.join('data', 'X_train.csv')) 
         
     y_train = pd.read_csv(os.path.join('data', 'y_train.csv')).values.ravel()
     
-    pipe, file_name = build_pipe(pca, over_sample)
+    pipe, file_name = build_pipe(scaler = scaler, 
+                                 pca = pca, 
+                                 over_sample = over_sample)
     
     file_name = prefix + file_name
       

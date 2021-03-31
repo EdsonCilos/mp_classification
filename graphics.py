@@ -3,7 +3,7 @@
 """
 Created on Sat Aug  1 08:02:39 2020
 
-@author: edson
+@author: Edson Cilos
 """
 import os
 import numpy as np
@@ -16,22 +16,11 @@ import seaborn as sns
 from utils import classes_names
 
 
-
 def qq_plot(data):
     return qq(data, line='s')
 
-def gs_heatmap():
-    
-    names = ['gs', 'pca_gs', 'pca_over_gs', 'over_gs']
-    
-    
-    """
-    if(prefix is not None):
-        if(len(prefix) > 0):
-            prefix += '_'
-    else:
-        prefix = ''
-    """
+def gs_heatmap(names = ['gs', 'pca_gs', 'pca_over_gs', 'over_gs'],
+               output_name = 'gs'):
     
     models = {'SVC' : 'SVC', 
               'RandomForestClassifier' : 'RF', 
@@ -93,7 +82,8 @@ def gs_heatmap():
         
         ax.set_title('Best model: ' + name )
     
-    fig.savefig(os.path.join(results_path, 'gs.png'),
+    fig.savefig(os.path.join(results_path, output_name + '.png'),
+                dpi = 1200,
                 bbox_inches = "tight")
     
     return df_list
@@ -210,8 +200,6 @@ def _total_score_plot(name_list, main_name, alpha):
 
 def total_score_plot(df_tuples, name):
         
-    
-    
     sns.set_palette(sns.color_palette("hls", len(df_tuples)))
     
     for tup in df_tuples:
@@ -230,8 +218,7 @@ def total_score_plot(df_tuples, name):
     
     plt.show()
     plt.close()
-    
-    
+
     ##The same for accuracy
     sns.set_palette(sns.color_palette("hls", len(df_tuples)))
     
@@ -353,9 +340,7 @@ def final_table():
     for n in names:
         w0.append(ked_et_al[n])
             
-    w0 = np.array(w0)
-    
-    
+    w0 = np.array(w0)    
         
     #Load model's sensitivity mccv data
     df1 = pd.read_csv(os.path.join('results', 

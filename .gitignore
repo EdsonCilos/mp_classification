@@ -1,4 +1,4 @@
-
+mccv_data/
 mccv_data/NN_sigmoid_1_100_0.1_0.1/cross_matrix_temp.csv
 mccv_data/NN_sigmoid_1_100_0.1_0.1/detailed_score_temp.csv
 mccv_data/NN_sigmoid_1_100_0.1_0.1/probability_temp.csv
@@ -7,3 +7,6 @@ results/shallow_sigmoid_ns.csv
 results/pca_shallow_sigmoid_ns.csv
 results/pca_over_shallow_sigmoid_ns_1.csv
 results/pca_over_shallow_sigmoid_ns.csv
+.vscode/settings.json
+__pycache__/grid_search.cpython-38.pyc
+__pycache__/neural_search.cpython-38.pyc
