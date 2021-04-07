@@ -1,0 +1,11 @@
+estimator__n_neurons,estimator__n_hidden,estimator__learning_rate,estimator__act,estimator,std,neg_log_loss
+49,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.019597827923998352,-0.24582573458374515
+54,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.02755018348193071,-0.24962553960281994
+52,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.024463891069679715,-0.2532991867312795
+53,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.015561395328832502,-0.25574866951354436
+48,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.022314968055769754,-0.2559342769472919
+51,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.0262150631130472,-0.26421508388741827
+45,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.021088900697957717,-0.2666619093079272
+46,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.031412588736945475,-0.2701160799434941
+50,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.027118420134535783,-0.2740453168115332
+47,1,0.015,sigmoid,<tensorflow.python.keras.wrappers.scikit_learn.KerasClassifier object at 0x0000025F813D3100>,0.02103290281832285,-0.2754816273084957

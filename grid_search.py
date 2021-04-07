@@ -36,7 +36,7 @@ seed = 0
 
 class Savgol_transformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, window, degree):
+    def __init__(self, window = 11, degree = 10):
         assert window > degree, "window must be less than poly. degree"
         self.window = window
         self.degree = degree
@@ -49,15 +49,19 @@ class Savgol_transformer(BaseEstimator, TransformerMixin):
     def transform(self, X, y = None ):
         return savgol_filter(X, self.window, self.degree)
     
-def build_pipe(scaler = 'std', pca = True, over_sample = True):
+def build_pipe(scaler = '', 
+               sav_filter = True,
+               pca = True, 
+               over_sample = True):
     
     prefix = ''
     
-    pre_pipe =[('filter', Savgol_transformer(11, 10)),
-             ('estimator', DummyClassifier())
-             ]
+    pre_pipe =[('estimator', DummyClassifier())]
     
-    dim_red_position = 1
+    if sav_filter:
+        prefix += 'svfilter_'
+        pre_pipe.insert(-1, ('filter', 
+                             Savgol_transformer(window = 11, degree=10)))        
     
     scaler_dictionary = {
         'std' : StandardScaler(), 
@@ -66,19 +70,12 @@ def build_pipe(scaler = 'std', pca = True, over_sample = True):
     
     if(scaler in scaler_dictionary):
         
-        if scaler == 'minmax':
-            prefix += 'minmax_'
-            
-        pre_pipe.insert(1, ('scaler', scaler_dictionary[scaler]))        
-        dim_red_position += 1
-        
-    else: 
-        print('No scaler was selected. Some algoritms may not work well')
-        prefix += 'noscaler_'
+        prefix += scaler + '_'    
+        pre_pipe.insert(-1, ('scaler', scaler_dictionary[scaler]))         
                 
     if(pca):        
         prefix += 'pca_'        
-        pre_pipe.insert(dim_red_position,
+        pre_pipe.insert(-1,
                         ('dim_red', 
                          PCA(n_components = 0.99, random_state = seed)
                          ))
@@ -89,12 +86,13 @@ def build_pipe(scaler = 'std', pca = True, over_sample = True):
        pre_pipe.insert(-1, ('over_sample',
                             RandomOverSampler(random_state = seed)) 
                              )
-        
+    print('Pipeline prefix: ' + prefix)   
     return  Pipeline(pre_pipe), prefix
 
 def base_dic(estimator):
     return {'estimator': [estimator]} 
 
+#Basic grid structure for classical algorithms, expecpt neural network
 def classical_grid():
     
      #DecisionTree
@@ -161,23 +159,35 @@ def classical_grid():
 
     
     
-def search(scaler = 'std', pca = True, over_sample = True, 
-           param_grid = classical_grid(), prefix = '',  n_jobs = -2):
+def search(scaler = '', 
+           sav_filter = True,
+           pca = True, 
+           over_sample = True, 
+           param_grid = classical_grid(), 
+           prefix = '', 
+           n_jobs = -2):
     
+    
+    print('Loading training set...')
     X_train = pd.read_csv(os.path.join('data', 'X_train.csv')) 
-        
-    y_train = pd.read_csv(os.path.join('data', 'y_train.csv')).values.ravel()
+    y_train = pd.read_csv(os.path.join('data', 'y_train.csv')).values.ravel() 
     
+    
+    print('Building pipeline...')
     pipe, file_name = build_pipe(scaler = scaler, 
+                                 sav_filter = sav_filter,
                                  pca = pca, 
                                  over_sample = over_sample)
     
     file_name = prefix + file_name
+    
+    print('The file name is: ' + file_name)
       
     cv_fixed_seed = StratifiedKFold(n_splits=4, 
                                     shuffle = True, 
                                     random_state = seed)
 
+    print('Running parameter search (It can take a long time) ...')
     search = GridSearchCV(pipe,
                           param_grid,
                           scoring = 'neg_log_loss',
@@ -197,11 +207,14 @@ def search(scaler = 'std', pca = True, over_sample = True,
         
     file_name += 'gs.csv'
     
+    
     folder = os.path.join(os.getcwd(), 'results')
     
     if not os.path.exists(folder):
             os.makedirs(folder)
-
-    results.to_csv(os.path.join(folder, file_name), index = False)
+            
+    final_path = os.path.join(folder, file_name)        
+    print('Search is finished, saving results in ' + final_path)
+    results.to_csv(final_path, index = False)
     
     return results
