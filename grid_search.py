@@ -9,6 +9,7 @@ Created on Mon Aug 24 17:52:03 2020
 import os
 import pandas as pd
 import numpy as np
+from itertools import product
 
 #Filter preprocessing
 from scipy.signal import savgol_filter
@@ -27,9 +28,13 @@ from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 from sklearn.base import BaseEstimator, TransformerMixin
+
 #Imblearn modules
 from imblearn.over_sampling import RandomOverSampler
 from imblearn.pipeline import Pipeline 
+
+#Project modules
+from neural_search import neural_grid
 
 #Fix seed to reproducibility
 seed = 0
@@ -86,7 +91,7 @@ def build_pipe(scaler = '',
        pre_pipe.insert(-1, ('over_sample',
                             RandomOverSampler(random_state = seed)) 
                              )
-    print('Pipeline prefix: ' + prefix)   
+
     return  Pipeline(pre_pipe), prefix
 
 def base_dic(estimator):
@@ -160,7 +165,7 @@ def classical_grid():
     
     
 def search(scaler = '', 
-           sav_filter = True,
+           sav_filter = False,
            pca = True, 
            over_sample = True, 
            param_grid = classical_grid(), 
@@ -179,7 +184,7 @@ def search(scaler = '',
                                  pca = pca, 
                                  over_sample = over_sample)
     
-    file_name = prefix + file_name
+    file_name = prefix + file_name + 'gs.csv'
     
     print('The file name is: ' + file_name)
       
@@ -204,10 +209,7 @@ def search(scaler = '',
                                   columns=["neg_log_loss"])],axis=1)
                      
     results.sort_values(by=['neg_log_loss'], ascending=False, inplace=True)
-        
-    file_name += 'gs.csv'
-    
-    
+            
     folder = os.path.join(os.getcwd(), 'results')
     
     if not os.path.exists(folder):
@@ -218,3 +220,32 @@ def search(scaler = '',
     results.to_csv(final_path, index = False)
     
     return results
+
+def run():
+    
+    i = 0
+    
+    for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
+        
+        i += 1
+        sc = 'std' if scaler else ''
+        grid = neural_grid() if nn else classical_grid()
+        prefix = 'nn_' if nn else ''
+        
+        file_name = prefix + 'svfilter_' if sv_filter else '' + sc +  \
+        'pca_' if pca else '' + 'over_' if over else '' + 'gs.csv'
+        
+        file_path = os.path.join(os.getcwd(), 'results', file_name)
+        
+        if os.path.isfile(file_path):
+            print(file_name + " already exists, iteration was skipped ...")
+            
+        else:
+            print("{0} iteration ({1}/32)...".format(file_name, str(i)))
+            search(scaler = sc, 
+                   sav_filter = sv_filter,
+                   pca = pca, 
+                   over_sample = over, 
+                   param_grid = grid, 
+                   prefix = prefix)
+            

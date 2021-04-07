@@ -1,8 +1,5 @@
 mccv_data/
-results/shallow_sigmoid_ns.csv
-results/pca_shallow_sigmoid_ns.csv
-results/pca_over_shallow_sigmoid_ns_1.csv
-results/pca_over_shallow_sigmoid_ns.csv
+results/_neural/
 .vscode/settings.json
 __pycache__/grid_search.cpython-38.pyc
 __pycache__/neural_search.cpython-38.pyc
