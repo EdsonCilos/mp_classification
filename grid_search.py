@@ -228,12 +228,14 @@ def run():
     for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
         
         i += 1
+        prefix = 'nn_' if nn else ''
         sc = 'std' if scaler else ''
         grid = neural_grid() if nn else classical_grid()
-        prefix = 'nn_' if nn else ''
+        sv = 'svfilter_' if sv_filter else '' 
+        pc = 'pca_' if pca else ''
+        ov = 'over_' if over else ''
         
-        file_name = prefix + 'svfilter_' if sv_filter else '' + sc +  \
-        'pca_' if pca else '' + 'over_' if over else '' + 'gs.csv'
+        file_name = prefix + sv + sc +  pc + ov + 'gs.csv'
         
         file_path = os.path.join(os.getcwd(), 'results', file_name)
         
@@ -247,5 +249,6 @@ def run():
                    pca = pca, 
                    over_sample = over, 
                    param_grid = grid, 
-                   prefix = prefix)
+                   prefix = prefix,
+                   n_jobs = 1)
             
