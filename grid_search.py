@@ -229,7 +229,7 @@ def run():
         
         i += 1
         prefix = 'nn_' if nn else ''
-        sc = 'std' if scaler else ''
+        sc = 'std_' if scaler else ''
         grid = neural_grid() if nn else classical_grid()
         sv = 'svfilter_' if sv_filter else '' 
         pc = 'pca_' if pca else ''
@@ -244,7 +244,7 @@ def run():
             
         else:
             print("{0} iteration ({1}/32)...".format(file_name, str(i)))
-            search(scaler = sc, 
+            search(scaler = 'std' if scaler else '', 
                    sav_filter = sv_filter,
                    pca = pca, 
                    over_sample = over, 

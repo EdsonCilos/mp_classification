@@ -1,0 +1,195 @@
+estimator,estimator__criterion,estimator__splitter,estimator__n_neighbors,estimator__p,estimator__weights,estimator__n_estimators,estimator__C,estimator__l1_ratio,estimator__gamma,estimator__kernel,std,neg_log_loss
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",entropy,,,,,1000.0,,,,,0.013516614975438218,-0.302894933157249
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",gini,,,,,1000.0,,,,,0.0149577683110773,-0.31979190086398945
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",entropy,,,,,100.0,,,,,0.07176098161081791,-0.34659932389903136
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",gini,,,,,100.0,,,,,0.06909385470498684,-0.3587184361045175
+"SVC(probability=True, random_state=0)",,,,,,,10.0,,auto,rbf,0.014090532220900244,-0.36215029752581535
+"SVC(probability=True, random_state=0)",,,,,,,10.0,,scale,rbf,0.01409053222090014,-0.36215029752581557
+"SVC(probability=True, random_state=0)",,,,,,,1.0,,scale,rbf,0.019798537656132518,-0.37881139724118323
+"SVC(probability=True, random_state=0)",,,,,,,1.0,,auto,rbf,0.019798537656132542,-0.3788113972411833
+"SVC(probability=True, random_state=0)",,,,,,,100.0,,auto,rbf,0.011558873383492492,-0.37959208976155767
+"SVC(probability=True, random_state=0)",,,,,,,100.0,,scale,rbf,0.011558873383492053,-0.37959208976155806
+"LogisticRegression(random_state=0, solver='newton-cg')",,,,,,,0.1,,,,0.07893660922871813,-0.3819471783970787
+"LogisticRegression(random_state=0, solver='newton-cg')",,,,,,,0.01,,,,0.05329860403530719,-0.3837434515416816
+"SVC(probability=True, random_state=0)",,,,,,,1000.0,,auto,rbf,0.010552610925452432,-0.3841598634806696
+"SVC(probability=True, random_state=0)",,,,,,,1000.0,,scale,rbf,0.01055261092545218,-0.3841598634806705
+"SVC(kernel='linear', probability=True, random_state=0)",,,,,,,0.01,,,,0.015569248678387207,-0.3856444661336439
+"SVC(kernel='linear', probability=True, random_state=0)",,,,,,,0.001,,,,0.009481438022048101,-0.3870073204161046
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.2,,,0.03935115847246592,-0.3937089068855075
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.8,,,0.03939402693523845,-0.3938325907171494
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.7000000000000001,,,0.039405539624204004,-0.3938856746914206
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.30000000000000004,,,0.039428531002653186,-0.3939163361607537
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.1,,,0.03937690469207195,-0.393917263174871
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.6,,,0.039417329153088494,-0.3939417304384862
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.5,,,0.03943774131786611,-0.3940070897116288
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.4,,,0.03946135192554277,-0.39407879744137453
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.30000000000000004,,,0.03948343195993332,-0.3941527039257546
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.2,,,0.039505233751082086,-0.39422853769287824
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,10.0,0.1,,,0.03952725333551689,-0.39430638425819264
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.8,,,0.039532603647821164,-0.3943071081415566
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.7000000000000001,,,0.03953479280057275,-0.394315099646238
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.6,,,0.039536996261371096,-0.3943231368528008
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.5,,,0.039539195785391015,-0.3943312022737909
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.4,,,0.03954134827453281,-0.39433928039684096
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.30000000000000004,,,0.03954350845291799,-0.39434738080328086
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.2,,,0.039545647038404935,-0.3943554911491603
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,100.0,0.1,,,0.0395477789193585,-0.39436361199102316
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.8,,,0.03954830817821171,-0.394363749352241
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.7000000000000001,,,0.039548520860670136,-0.3943645626844862
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.6,,,0.039548733193973416,-0.39436537612096795
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.5,,,0.03954894555911182,-0.3943661898873224
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.4,,,0.03954915779107408,-0.3943670038786021
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.30000000000000004,,,0.03954936986140284,-0.3943678180484091
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.2,,,0.0395495817348718,-0.39436863253696175
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1000.0,0.1,,,0.03954979352603547,-0.3943694473345426
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.4,,,0.03955481333069804,-0.3944649326359826
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.5,,,0.039723380374442264,-0.3952018394351287
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.6,,,0.040092847598022806,-0.39622719802877443
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.7000000000000001,,,0.04061791335875758,-0.39760333292334354
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,1.0,0.8,,,0.041281360102665615,-0.3991948615664934
+"SVC(kernel='linear', probability=True, random_state=0)",,,,,,,0.1,,,,0.024099771890690035,-0.40315492306538536
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.1,,,0.043336301512685894,-0.40663156699149305
+"SVC(kernel='linear', probability=True, random_state=0)",,,,,,,100.0,,,,0.027074663795263777,-0.40994216936799943
+"SVC(kernel='linear', probability=True, random_state=0)",,,,,,,1000.0,,,,0.027074663795263777,-0.40994216936799943
+"SVC(kernel='linear', probability=True, random_state=0)",,,,,,,10.0,,,,0.027074663795263777,-0.40994216936799943
+"SVC(kernel='linear', probability=True, random_state=0)",,,,,,,1.0,,,,0.02712025489548935,-0.4099888304403123
+"LogisticRegression(penalty='l1', random_state=0, solver='liblinear')",,,,,,,1.0,,,,0.02887637842898204,-0.41081401031819703
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.2,,,0.048077759487893175,-0.432104242854193
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.30000000000000004,,,0.03761619658449662,-0.4525923828637665
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.4,,,0.030896385394401867,-0.47651106812285715
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.5,,,0.027882615699032377,-0.5032608609968277
+"LogisticRegression(penalty='l1', random_state=0, solver='liblinear')",,,,,,,10.0,,,,0.07009310651794054,-0.5278033137012941
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.6,,,0.027546243333808954,-0.5311135282443054
+"SVC(probability=True, random_state=0)",,,,,,,0.1,,scale,rbf,0.017508222351673316,-0.5378038304690673
+"SVC(probability=True, random_state=0)",,,,,,,0.1,,auto,rbf,0.017508222351673364,-0.5378038304690673
+"LogisticRegression(random_state=0, solver='newton-cg')",,,,,,,1.0,,,,0.14361741052637128,-0.5496518981865979
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",entropy,,,,,10.0,,,,,0.15672342390415647,-0.5572956623548694
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.7000000000000001,,,0.02866906128416872,-0.5599119022742042
+"SVC(probability=True, random_state=0)",,,,,,,0.1,,auto,sigmoid,0.020485635849261486,-0.5875401768245759
+"SVC(probability=True, random_state=0)",,,,,,,0.1,,scale,sigmoid,0.020485970340037688,-0.5875406150476821
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.1,0.8,,,0.030224988702769132,-0.588754243172903
+"SVC(probability=True, random_state=0)",,,,,,,1.0,,auto,sigmoid,0.022238653495235388,-0.5950793902420584
+"SVC(probability=True, random_state=0)",,,,,,,1.0,,scale,sigmoid,0.02223646629783665,-0.5952296658927592
+"LogisticRegression(random_state=0, solver='newton-cg')",,,,,,,0.001,,,,0.03664182676469662,-0.623151461108105
+"SVC(probability=True, random_state=0)",,,,,,,100.0,,auto,poly,0.03726310784595403,-0.6426473001490326
+"SVC(probability=True, random_state=0)",,,,,,,100.0,,scale,poly,0.03726310784595404,-0.6426473001490327
+"SVC(probability=True, random_state=0)",,,,,,,10.0,,auto,poly,0.041427301145177994,-0.673096851047559
+"SVC(probability=True, random_state=0)",,,,,,,10.0,,scale,poly,0.04142730114517791,-0.673096851047559
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.1,,,0.03345167246106315,-0.6886623626172833
+"SVC(probability=True, random_state=0)",,,,,,,1000.0,,auto,poly,0.10311703565627328,-0.6997302076180983
+"SVC(probability=True, random_state=0)",,,,,,,1000.0,,scale,poly,0.10311703565627343,-0.6997302076180985
+"LogisticRegression(penalty='l1', random_state=0, solver='liblinear')",,,,,,,100.0,,,,0.10651623775802498,-0.7296289484133054
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",gini,,,,,10.0,,,,,0.1741491139919573,-0.7757057764694475
+"LogisticRegression(random_state=0, solver='newton-cg')",,,,,,,10.0,,,,0.14406454682626857,-0.7777241067192733
+"SVC(probability=True, random_state=0)",,,,,,,10.0,,scale,sigmoid,0.08231453560543034,-0.7849906786305348
+"SVC(probability=True, random_state=0)",,,,,,,10.0,,auto,sigmoid,0.08232505596042707,-0.7850016774238875
+"LogisticRegression(penalty='l1', random_state=0, solver='liblinear')",,,,,,,0.1,,,,0.023049141625061994,-0.8100701339774505
+"SVC(probability=True, random_state=0)",,,,,,,0.01,,scale,rbf,0.027486512358739168,-0.8345820326286221
+"SVC(probability=True, random_state=0)",,,,,,,0.01,,auto,rbf,0.027486512358739324,-0.8345820326286224
+"SVC(probability=True, random_state=0)",,,,,,,1.0,,auto,poly,0.05743666633869018,-0.8384697729390392
+"SVC(probability=True, random_state=0)",,,,,,,1.0,,scale,poly,0.057436666338689844,-0.8384697729390392
+"SVC(probability=True, random_state=0)",,,,,,,0.001,,auto,rbf,0.021969974021762657,-0.849520103938766
+"SVC(probability=True, random_state=0)",,,,,,,0.001,,scale,rbf,0.02196997402176206,-0.8495201039387673
+"SVC(probability=True, random_state=0)",,,,,,,0.01,,auto,sigmoid,0.014219279602686343,-0.8590445255149599
+"SVC(probability=True, random_state=0)",,,,,,,0.01,,scale,sigmoid,0.0142198778924669,-0.8590454844001605
+"SVC(probability=True, random_state=0)",,,,,,,0.001,,scale,sigmoid,0.007410550209366906,-0.8752087138974759
+"SVC(probability=True, random_state=0)",,,,,,,0.001,,auto,sigmoid,0.007410550209444813,-0.8752087138975545
+"SVC(probability=True, random_state=0)",,,,,,,100.0,,auto,sigmoid,0.11422837293908472,-0.9097526667994837
+"SVC(probability=True, random_state=0)",,,,,,,100.0,,scale,sigmoid,0.11422812893803175,-0.9097715249553001
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.2,,,0.028783199006487438,-0.9100307221869761
+"LogisticRegression(penalty='l1', random_state=0, solver='liblinear')",,,,,,,1000.0,,,,0.11910200692280179,-0.9295427072175404
+"SVC(probability=True, random_state=0)",,,,,,,0.1,,scale,poly,0.0489612442391855,-0.9827130706235843
+"SVC(probability=True, random_state=0)",,,,,,,0.1,,auto,poly,0.04896064857582682,-0.982716561468941
+"SVC(probability=True, random_state=0)",,,,,,,1000.0,,scale,sigmoid,0.10443562752402945,-1.0086032151676316
+"SVC(probability=True, random_state=0)",,,,,,,1000.0,,auto,sigmoid,0.10443359232212931,-1.008624477083304
+"LogisticRegression(random_state=0, solver='newton-cg')",,,,,,,100.0,,,,0.10469686956307167,-1.0136629927399834
+KNeighborsClassifier(),,,13.0,2.0,distance,,,,,,0.236549450632949,-1.0504859993196098
+KNeighborsClassifier(),,,13.0,2.0,uniform,,,,,,0.23788333018778185,-1.0819533925511546
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.30000000000000004,,,0.017891164648985946,-1.0968356536657333
+KNeighborsClassifier(),,,11.0,2.0,distance,,,,,,0.13776342823452914,-1.1123957365316937
+KNeighborsClassifier(),,,13.0,3.0,distance,,,,,,0.207903276954233,-1.1318836868378446
+KNeighborsClassifier(),,,11.0,2.0,uniform,,,,,,0.1391797089252715,-1.1399086191305998
+KNeighborsClassifier(),,,11.0,3.0,distance,,,,,,0.25314578695495754,-1.1528178958753337
+"SVC(probability=True, random_state=0)",,,,,,,0.01,,scale,poly,0.018675440235198987,-1.156799856061072
+"SVC(probability=True, random_state=0)",,,,,,,0.01,,auto,poly,0.01867544023524926,-1.1567998560611077
+KNeighborsClassifier(),,,13.0,3.0,uniform,,,,,,0.20984371358113446,-1.1639304777797557
+KNeighborsClassifier(),,,11.0,3.0,uniform,,,,,,0.25473992713408505,-1.1809244912063113
+KNeighborsClassifier(),,,10.0,3.0,distance,,,,,,0.23364699806373523,-1.1817120244124046
+KNeighborsClassifier(),,,13.0,4.0,distance,,,,,,0.3414444059550526,-1.1827190268046364
+KNeighborsClassifier(),,,10.0,2.0,distance,,,,,,0.150716944371392,-1.1868035629722018
+KNeighborsClassifier(),,,10.0,3.0,uniform,,,,,,0.23463148922789392,-1.2067812788479182
+KNeighborsClassifier(),,,10.0,2.0,uniform,,,,,,0.15386637579946152,-1.2120328545532546
+KNeighborsClassifier(),,,9.0,2.0,distance,,,,,,0.19623839805668106,-1.2144322104097138
+KNeighborsClassifier(),,,13.0,4.0,uniform,,,,,,0.34276379822779995,-1.2144358558888435
+"LogisticRegression(random_state=0, solver='newton-cg')",,,,,,,1000.0,,,,0.10265347772546514,-1.2281186028578261
+KNeighborsClassifier(),,,10.0,4.0,distance,,,,,,0.26657125890420347,-1.2312204107759526
+KNeighborsClassifier(),,,9.0,2.0,uniform,,,,,,0.19845727550933598,-1.2363894807947358
+KNeighborsClassifier(),,,11.0,4.0,distance,,,,,,0.2670664853404305,-1.2409551282940823
+KNeighborsClassifier(),,,10.0,4.0,uniform,,,,,,0.2678031274679758,-1.255116864504572
+KNeighborsClassifier(),,,9.0,3.0,distance,,,,,,0.23731096464305193,-1.255646603417065
+KNeighborsClassifier(),,,9.0,4.0,distance,,,,,,0.23837821600349945,-1.2644074319018093
+KNeighborsClassifier(),,,11.0,4.0,uniform,,,,,,0.26857420405951926,-1.2678607091957295
+KNeighborsClassifier(),,,9.0,3.0,uniform,,,,,,0.23772076498724246,-1.2783011958361667
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.4,,,0.015498356837435204,-1.286115035936515
+KNeighborsClassifier(),,,9.0,4.0,uniform,,,,,,0.24040013333601035,-1.2867768763310035
+KNeighborsClassifier(),,,7.0,3.0,distance,,,,,,0.13254104220176613,-1.3957501322507473
+KNeighborsClassifier(),,,7.0,2.0,distance,,,,,,0.33066945943265624,-1.398623616796998
+KNeighborsClassifier(),,,7.0,4.0,distance,,,,,,0.17855203966926497,-1.4083020323934397
+KNeighborsClassifier(),,,7.0,3.0,uniform,,,,,,0.13409183425871907,-1.412800151592486
+KNeighborsClassifier(),,,7.0,2.0,uniform,,,,,,0.33410839949688953,-1.415360039627755
+KNeighborsClassifier(),,,7.0,4.0,uniform,,,,,,0.18105155199032896,-1.4257417489400208
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.5,,,0.007151746970817857,-1.4353668403089586
+KNeighborsClassifier(),,,13.0,1.0,distance,,,,,,0.1916217790661948,-1.4534703115794332
+KNeighborsClassifier(),,,13.0,1.0,uniform,,,,,,0.19570538401405113,-1.4863781438840775
+"SVC(probability=True, random_state=0)",,,,,,,0.001,,auto,poly,0.12324898974360073,-1.4957100272874526
+"SVC(probability=True, random_state=0)",,,,,,,0.001,,scale,poly,0.12324898974325865,-1.4957100272879935
+KNeighborsClassifier(),,,5.0,3.0,distance,,,,,,0.08132745023807246,-1.5337115346502694
+KNeighborsClassifier(),,,5.0,3.0,uniform,,,,,,0.08466535401993291,-1.5450807770931523
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.6,,,0.009062750401687233,-1.5750766931779892
+KNeighborsClassifier(),,,11.0,1.0,distance,,,,,,0.1957776547700332,-1.5975032420453588
+KNeighborsClassifier(),,,9.0,1.0,distance,,,,,,0.1927411379872754,-1.613522701006194
+KNeighborsClassifier(),,,11.0,1.0,uniform,,,,,,0.1991405214944554,-1.6260615544277832
+KNeighborsClassifier(),,,10.0,1.0,distance,,,,,,0.19102217919135644,-1.626426278775484
+KNeighborsClassifier(),,,9.0,1.0,uniform,,,,,,0.1955541073660686,-1.6368217668301304
+KNeighborsClassifier(),,,10.0,1.0,uniform,,,,,,0.19379071294671735,-1.6525704960219512
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.7000000000000001,,,0.009287816840924716,-1.7041005595017116
+KNeighborsClassifier(),,,7.0,1.0,distance,,,,,,0.292991200338922,-1.7085014351476406
+KNeighborsClassifier(),,,5.0,4.0,distance,,,,,,0.2646716897208478,-1.716405657075773
+KNeighborsClassifier(),,,7.0,1.0,uniform,,,,,,0.2947358345244198,-1.726140878152315
+KNeighborsClassifier(),,,5.0,4.0,uniform,,,,,,0.26765671894842635,-1.7287392894491116
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.01,0.8,,,0.008359123359593094,-1.8030824383906119
+KNeighborsClassifier(),,,5.0,2.0,distance,,,,,,0.2830178866220095,-1.9182519262701616
+KNeighborsClassifier(),,,5.0,2.0,uniform,,,,,,0.2848219091974301,-1.9303538566398257
+KNeighborsClassifier(),,,5.0,1.0,distance,,,,,,0.4089302755381335,-1.9770510101271865
+KNeighborsClassifier(),,,5.0,1.0,uniform,,,,,,0.4106716245610371,-1.9889283882004336
+KNeighborsClassifier(),,,3.0,3.0,distance,,,,,,0.2734762032309888,-2.0599992044492645
+KNeighborsClassifier(),,,3.0,4.0,distance,,,,,,0.28222706871193537,-2.0674207245116185
+KNeighborsClassifier(),,,3.0,3.0,uniform,,,,,,0.2716414339017835,-2.067590187270915
+KNeighborsClassifier(),,,3.0,4.0,uniform,,,,,,0.2813036796787634,-2.0758453652477717
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.1,,,0.009974887864500945,-2.1054709399911964
+"LogisticRegression(penalty='l1', random_state=0, solver='liblinear')",,,,,,,0.01,,,,0.002772335775946057,-2.208745071814511
+KNeighborsClassifier(),,,3.0,2.0,distance,,,,,,0.275499506632367,-2.313520555570819
+KNeighborsClassifier(),,,3.0,2.0,uniform,,,,,,0.2769949261629781,-2.3198638507189036
+KNeighborsClassifier(),,,3.0,1.0,distance,,,,,,0.4606229952973831,-2.378018396675699
+KNeighborsClassifier(),,,3.0,1.0,uniform,,,,,,0.46115571117789333,-2.385446986037101
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.2,,,0.006453827630001841,-2.6063856523667877
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.30000000000000004,,,0.0024452870651214655,-2.6264457632765925
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.4,,,0.005111632706900395,-2.62827755363651
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.5,,,0.006174775976678473,-2.6302442071503345
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.8,,,0.004590189813771785,-2.6314810976297798
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.7000000000000001,,,0.004528165581787595,-2.631573816803592
+"LogisticRegression(penalty='elasticnet', random_state=0, solver='saga')",,,,,,,0.001,0.6,,,0.004467958734708269,-2.6316641889349888
+"LogisticRegression(penalty='l1', random_state=0, solver='liblinear')",,,,,,,0.001,,,,0.0,-2.6390573296152584
+KNeighborsClassifier(),,,1.0,3.0,distance,,,,,,0.6302471221787246,-3.7625325348703647
+KNeighborsClassifier(),,,1.0,3.0,uniform,,,,,,0.6302471221787246,-3.7625325348703647
+KNeighborsClassifier(),,,1.0,4.0,distance,,,,,,0.6199477377316789,-3.806805847660688
+KNeighborsClassifier(),,,1.0,4.0,uniform,,,,,,0.6199477377316789,-3.806805847660688
+KNeighborsClassifier(),,,1.0,2.0,distance,,,,,,0.7282076346451696,-3.8536423522441368
+KNeighborsClassifier(),,,1.0,2.0,uniform,,,,,,0.7282076346451696,-3.8536423522441368
+KNeighborsClassifier(),,,1.0,1.0,distance,,,,,,0.21495716362609263,-4.300336776554935
+KNeighborsClassifier(),,,1.0,1.0,uniform,,,,,,0.21495716362609263,-4.300336776554935
+DecisionTreeClassifier(random_state=0),entropy,random,,,,,,,,,0.7698031381220408,-4.523800497428203
+DecisionTreeClassifier(random_state=0),gini,random,,,,,,,,,0.7278761652975072,-4.747730253172949
+DecisionTreeClassifier(random_state=0),gini,best,,,,,,,,,0.17289501177755442,-5.017098408886712
+DecisionTreeClassifier(random_state=0),entropy,best,,,,,,,,,0.8284600599410054,-5.196288816969656
+GaussianNB(),,,,,,,,,,,1.1292878703774205,-7.706486721267424
