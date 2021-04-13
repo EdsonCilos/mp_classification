@@ -8,16 +8,128 @@ Created on Sat Aug  1 08:02:39 2020
 import os
 import numpy as np
 import pandas as pd
+from itertools import product
+
 from scipy.stats import t
 from matplotlib import pyplot as plt
 from statsmodels.graphics.gofplots import qqplot as qq
 from matplotlib.colors import ListedColormap
 import seaborn as sns
 from utils import classes_names
+from utils import file_name as f_name
 
 
 def qq_plot(data):
     return qq(data, line='s')
+
+def gs_heatmap2(output_name = 'gs_table'):
+    
+    classical_models = {'SVC' : 'SVC', 
+              'RandomForestClassifier' : 'RF', 
+              'LogisticRegression' : 'LR', 
+              'KNeighborsClassifier' : 'KNN', 
+              'DecisionTreeClassifier' : 'DT',
+              'GaussianNB' : 'GB'}
+    
+    #fig, axs = plt.subplots(1, 1, figsize=(16, 5))
+    models = {}
+    
+    for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
+        
+        file_name = f_name(nn=nn,
+                           sv_filter=sv_filter, 
+                           scaler=scaler, 
+                           pca= pca, 
+                           over_sample= over)
+        
+        file_path = os.path.join(os.getcwd(), 'results', file_name)
+
+        
+        if os.path.isfile(file_path):
+            
+            df = pd.read_csv(file_path)
+            replace = True
+            
+            if nn:
+                
+                row = df.iloc[0]
+                
+                if 'NN' in models:
+                    if models['NN'][4] <= -row["neg_log_loss"]: 
+                        replace=False
+                            
+                if replace:
+                    models['NN'] = [int(sv_filter), int(scaler), int(pca),
+                                    int(over), -row["neg_log_loss"], 
+                                    row["std"]]
+            else:
+
+                for key in classical_models:
+        
+                    row = next(r  for _, r  in df.iterrows() 
+                               if key in r["estimator"])
+                    
+                    replace = True
+                    
+                    if classical_models[key] in models:
+                        if (models[classical_models[key]][4]
+                            <= -row["neg_log_loss"]): 
+                            replace=False           
+                            
+                    if replace:
+                        models[classical_models[key]] = [int(sv_filter), 
+                                                         int(scaler),
+                                                         int(pca),
+                                                         int(over),
+                                                         -row["neg_log_loss"], 
+                                                         row["std"]]
+        else:
+            print(file_name + " does not exists, please run the gridSearch!")
+            break
+        
+    data = []
+    idxs = []
+    
+    for key in models:
+        data.append(models[key])
+        idxs.append(key)
+        
+    df = pd.DataFrame(data = data, 
+                        columns = ["Savitzky–Golay filter", 
+                                   "Standard scaler",
+                                   "PCA (99%)",
+                                   "Over sample",
+                                   "Log-loss", 
+                                   "Standard Deviation"],
+                            index = idxs)
+    
+    df.sort_values(by = ["Log-loss"], inplace = True)
+    #df[["Log-loss", 'Standard Deviation']].apply(lambda n: np.round(n ,4))
+
+    
+    c_map = plt.get_cmap('YlGnBu')
+    c_map = ListedColormap(c_map(np.linspace(0.1, 0.7, 256)))
+
+    fig, ax = plt.subplots(figsize=(12, 7))
+    heat = sns.heatmap(df, annot=True, linewidths= 1, 
+                       cmap=c_map, ax = ax, fmt='.4f')
+    
+    #Ad-hoc
+    for text in heat.texts:
+        txt = text.get_text()
+        n = float(txt)
+        if(n == 0 or n ==1 ): text.set_text('Yes' if n else 'No')
+        
+
+    ax.set_title('Grid Search')
+    
+    fig.savefig(os.path.join('results', output_name + '.png'),
+                dpi = 1200, 
+                bbox_inches = "tight")
+        
+    return df
+        
+        
 
 def gs_heatmap(names = ['gs', 'pca_gs', 'pca_over_gs', 'over_gs'],
                output_name = 'gs'):
@@ -129,6 +241,7 @@ def log_loss_table():
     ax.set_title('Cross entropy')
     
     fig.savefig(os.path.join('results', 'log_loss.png'), 
+                dpi = 1200,
                 bbox_inches = "tight")
     
     return df
