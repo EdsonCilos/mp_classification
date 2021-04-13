@@ -10,19 +10,16 @@ import os
 import pandas as pd
 from itertools import product
 
-
 #Sklearn Model Selection
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
-
 
 #Project modules
 from utils import file_name as f_name
 from param_grid import neural_grid, classical_grid
 from pipeline import build_pipe
 
-
-seed = 0
+seed = 0 #In the future: move to a config file
 
 def search(scaler = '', 
            sav_filter = False,

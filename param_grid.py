@@ -76,6 +76,15 @@ def neural_grid(epochs = 1000, patience = 3):
     
     return [neural_network]
 
+
+#
+def filter_grid(estimator, max_window = 11):
+    
+    return [{'estimator': estimator,
+             'filter_window': [window],
+             'filter_degree': np.arange(2, window)
+             }  for window in range(3, max_window + 1) ]
+
 #Basic grid structure for classical algorithms, expecpt neural network
 def classical_grid():
     

@@ -9,7 +9,6 @@ import os
 import numpy as np
 import pickle
 from sklearn.metrics import multilabel_confusion_matrix
-
     
 def sensitivity(matrix):
   return matrix[1,1]/(matrix[1,1] + matrix[1,0])

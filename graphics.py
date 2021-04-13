@@ -5,107 +5,31 @@ Created on Sat Aug  1 08:02:39 2020
 
 @author: Edson Cilos
 """
+#Standard packages 
 import os
 import numpy as np
 import pandas as pd
-from itertools import product
-
 from scipy.stats import t
+
+#Graphics packages
 from matplotlib import pyplot as plt
 from statsmodels.graphics.gofplots import qqplot as qq
 from matplotlib.colors import ListedColormap
 import seaborn as sns
-from utils import classes_names
-from utils import file_name as f_name
 
+#Project packages
+from utils import classes_names
+from table import best_results
+
+#Still beta, several updates required!
 
 def qq_plot(data):
     return qq(data, line='s')
 
+#This function will replace gs_heatmap soon
 def gs_heatmap2(output_name = 'gs_table'):
     
-    classical_models = {'SVC' : 'SVC', 
-              'RandomForestClassifier' : 'RF', 
-              'LogisticRegression' : 'LR', 
-              'KNeighborsClassifier' : 'KNN', 
-              'DecisionTreeClassifier' : 'DT',
-              'GaussianNB' : 'GB'}
-    
-    #fig, axs = plt.subplots(1, 1, figsize=(16, 5))
-    models = {}
-    
-    for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
-        
-        file_name = f_name(nn=nn,
-                           sv_filter=sv_filter, 
-                           scaler=scaler, 
-                           pca= pca, 
-                           over_sample= over)
-        
-        file_path = os.path.join(os.getcwd(), 'results', file_name)
-
-        
-        if os.path.isfile(file_path):
-            
-            df = pd.read_csv(file_path)
-            replace = True
-            
-            if nn:
-                
-                row = df.iloc[0]
-                
-                if 'NN' in models:
-                    if models['NN'][4] <= -row["neg_log_loss"]: 
-                        replace=False
-                            
-                if replace:
-                    models['NN'] = [int(sv_filter), int(scaler), int(pca),
-                                    int(over), -row["neg_log_loss"], 
-                                    row["std"]]
-            else:
-
-                for key in classical_models:
-        
-                    row = next(r  for _, r  in df.iterrows() 
-                               if key in r["estimator"])
-                    
-                    replace = True
-                    
-                    if classical_models[key] in models:
-                        if (models[classical_models[key]][4]
-                            <= -row["neg_log_loss"]): 
-                            replace=False           
-                            
-                    if replace:
-                        models[classical_models[key]] = [int(sv_filter), 
-                                                         int(scaler),
-                                                         int(pca),
-                                                         int(over),
-                                                         -row["neg_log_loss"], 
-                                                         row["std"]]
-        else:
-            print(file_name + " does not exists, please run the gridSearch!")
-            break
-        
-    data = []
-    idxs = []
-    
-    for key in models:
-        data.append(models[key])
-        idxs.append(key)
-        
-    df = pd.DataFrame(data = data, 
-                        columns = ["Savitzky–Golay filter", 
-                                   "Standard scaler",
-                                   "PCA (99%)",
-                                   "Over sample",
-                                   "Log-loss", 
-                                   "Standard Deviation"],
-                            index = idxs)
-    
-    df.sort_values(by = ["Log-loss"], inplace = True)
-    #df[["Log-loss", 'Standard Deviation']].apply(lambda n: np.round(n ,4))
-
+    df = best_results()
     
     c_map = plt.get_cmap('YlGnBu')
     c_map = ListedColormap(c_map(np.linspace(0.1, 0.7, 256)))
@@ -130,7 +54,7 @@ def gs_heatmap2(output_name = 'gs_table'):
     return df
         
         
-
+#Deprecated
 def gs_heatmap(names = ['gs', 'pca_gs', 'pca_over_gs', 'over_gs'],
                output_name = 'gs'):
     
@@ -223,9 +147,7 @@ def log_loss_table():
     
     for name in algorithms:
         rows.append(log_loss_row(name))
-        
-    
-        
+            
     df = pd.DataFrame(data = np.round(rows, 4), 
                       columns = columns, 
                       index = algorithms)
@@ -247,11 +169,10 @@ def log_loss_table():
     return df
     
         
-
 def log_loss_row(name, alpha = 1e-4):
-  
+    
     df = pd.read_csv(os.path.join('mccv_data', name,'total_score.csv'))
-
+    
     return [np.mean(df[df.columns[1]]), np.std(df[df.columns[1]])]
 
 

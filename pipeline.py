@@ -76,5 +76,3 @@ def build_pipe(scaler = '',
                              )
 
     return  Pipeline(pre_pipe), prefix
-
-    

@@ -31,6 +31,8 @@ from tensorflow.keras.callbacks import EarlyStopping
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+#Beta version!
+
 def results_total(X, name, sufix, temp=True): #Arrumar!
  
    posfix = '_temp' if temp else '' 
