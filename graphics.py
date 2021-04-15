@@ -29,7 +29,7 @@ def qq_plot(data):
 #This function will replace gs_heatmap soon
 def gs_heatmap2(output_name = 'gs_table'):
     
-    df = best_results()
+    df, _ = best_results()
     
     c_map = plt.get_cmap('YlGnBu')
     c_map = ListedColormap(c_map(np.linspace(0.1, 0.7, 256)))

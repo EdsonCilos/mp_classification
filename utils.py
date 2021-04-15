@@ -3,7 +3,7 @@
 """
 Created on Thu Aug 20 10:30:23 2020
 
-@author: edson
+@author: Edson Cilos
 """
 import os
 import numpy as np

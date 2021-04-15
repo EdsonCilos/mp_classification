@@ -16,8 +16,10 @@ from sklearn.model_selection import StratifiedKFold
 
 #Project modules
 from utils import file_name as f_name
-from param_grid import neural_grid, classical_grid
-from pipeline import build_pipe
+from param_grid import neural_grid, classical_grid, filter_grid
+from pipeline import build_pipe, pipe_config
+from table import best_results
+from model_picker import get_1estimator
 
 seed = 0 #In the future: move to a config file
 
@@ -27,7 +29,8 @@ def search(scaler = '',
            over_sample = True, 
            param_grid = classical_grid(), 
            prefix = '', 
-           n_jobs = -2):
+           n_jobs = 1,
+           save = True):
     
     
     print('Loading training set...')
@@ -66,15 +69,17 @@ def search(scaler = '',
                                   columns=["neg_log_loss"])],axis=1)
                      
     results.sort_values(by=['neg_log_loss'], ascending=False, inplace=True)
-            
-    folder = os.path.join(os.getcwd(), 'results')
     
-    if not os.path.exists(folder):
+    if save:
+        
+        folder = os.path.join(os.getcwd(), 'results')
+    
+        if not os.path.exists(folder):
             os.makedirs(folder)
             
-    final_path = os.path.join(folder, file_name)        
-    print('Search is finished, saving results in ' + final_path)
-    results.to_csv(final_path, index = False)
+        final_path = os.path.join(folder, file_name)        
+        print('Search is finished, saving results in ' + final_path)
+        results.to_csv(final_path, index = False)
     
     return results
 
@@ -82,6 +87,9 @@ def run():
     
     i = 0
     
+    print('Steps: (1) GridSearch across several combinations \n \
+          (2) GridSearch searching for best filters')
+          
     for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
         
         i += 1
@@ -110,4 +118,53 @@ def run():
                    n_jobs = 1)
             
     print("GridSearch finished...")
+    print("Building best results table...")
+    
+    df, paths = best_results()
+    
+    print("Trying diferent filters for each algorithm...")
+    j = 0
+    
+    for model in paths:
+        
+        j +=1
+        file_path = paths[model]
+        
+        estimator, config = get_1estimator(file_path = file_path, 
+                                           model_name = model)
+                                   
+        print('{} best configuration: {}'.format(model, config))
+        
+        param_grid = filter_grid(estimator)
+        
+        _, scaler, pca, over_sample = pipe_config(os.path.basename(
+            file_path))
+        
+        prefix = 'ft_{}_'.format(model)
+        
+        file_name = prefix  + f_name(nn = False,
+                                     sv_filter = True, 
+                                     scaler = scaler, 
+                                     pca = pca, 
+                                     over_sample = over_sample)
+        
+        file_path = os.path.join(os.getcwd(), 'results', file_name)
+        
+        if os.path.isfile(file_path):
+            print("{} already exists, filter iteration ({}/7) was skipped ..."
+                  .format(file_name, j))
+                  
+        else:
             
+            print("{} filter iteration ({}/7)...".format(file_name, j))
+            search(scaler = scaler, 
+                   sav_filter = True,
+                   pca = pca, 
+                   over_sample = over_sample, 
+                   param_grid = param_grid, 
+                   prefix = prefix, 
+                   n_jobs = 1,
+                   save = True)
+    
+    print('GridSearch fully finished.')
+        

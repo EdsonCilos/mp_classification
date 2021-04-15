@@ -1,0 +1,26 @@
+estimator,filter__degree,filter__window,std,neg_log_loss
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",6,11,0.14847364267098606,-0.4682696048931482
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",7,11,0.1484736260797098,-0.468269638221615
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",5,7,0.148475160672407,-0.46827409185285845
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",4,7,0.14847516974467193,-0.46827410542634723
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",6,9,0.1484767298627339,-0.4682766757493367
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",7,9,0.1484767324241518,-0.4682766962005116
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",8,11,0.14847715361068947,-0.4682781687248812
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",9,11,0.14847714922794172,-0.46827817363141616
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",2,3,0.14847732453246393,-0.468284166888888
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",4,5,0.14847732453246393,-0.468284166888888
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",6,7,0.14847732453246387,-0.468284166888888
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",8,9,0.14847732453246393,-0.468284166888888
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",10,11,0.1484773245324639,-0.46828416688888813
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",4,11,0.14833550510548146,-0.4683817495596582
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",5,11,0.14833552108785913,-0.4683818872769496
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",4,9,0.14838695822076872,-0.46843125374252165
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",5,9,0.14838699604290473,-0.468431419480877
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",2,5,0.14838782677885826,-0.46843656352228535
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",3,5,0.1483878120609149,-0.4684365659064852
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",2,7,0.1482686978929264,-0.4684987013803313
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",3,7,0.14826878583933933,-0.46849915170501616
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",2,9,0.14649237295547385,-0.46987046657961984
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",3,9,0.14649237844086788,-0.46987087754441437
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",3,11,0.14566266719051882,-0.47112767179212706
+"KNeighborsClassifier(n_neighbors=13, p=3, weights='distance')",2,11,0.14566286544907175,-0.4711276926573355

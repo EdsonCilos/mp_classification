@@ -11,17 +11,69 @@ from itertools import product
 
 #Project packages
 from utils import file_name as f_name
+from pipeline import pipe_config
 
-def best_results():
-    
-    classical_models = {'SVC' : 'SVC', 
+classical_models = {'SVC' : 'SVC', 
               'RandomForestClassifier' : 'RF', 
               'LogisticRegression' : 'LR', 
               'KNeighborsClassifier' : 'KNN', 
               'DecisionTreeClassifier' : 'DT',
               'GaussianNB' : 'GB'}
+
+def filter_results():
     
-    #fig, axs = plt.subplots(1, 1, figsize=(16, 5))
+    df, estimator_path = best_results()
+    
+    log_loss = []
+    models = []
+    
+    for model in estimator_path:
+        
+        _,scaler,pca,ov = pipe_config(os.path.basename(estimator_path[model]))
+        
+        file_name = f_name(nn = True if model == 'NN' else False, 
+                           sv_filter = False, 
+                           scaler = scaler, 
+                           pca = pca, 
+                           over_sample = ov)
+                
+        ft_file_name = 'ft_{}_'.format(model)  + f_name(nn = False,
+                                                        sv_filter = True, 
+                                                        scaler = scaler, 
+                                                        pca = pca, 
+                                                        over_sample = ov)
+        
+
+        file_path = os.path.join('results', file_name)
+        ft_file_path = os.path.join('results', ft_file_name)
+        
+        df = pd.read_csv(file_path)
+        ft_df = pd.read_csv(ft_file_path)
+        
+        row = df.iloc[0] if model == 'NN' else next(
+                r  for _, r  in df.iterrows() if model in r['estimator'])
+    
+        ft_row = ft_df.iloc[0]
+        
+        log_loss.append([-row["neg_log_loss"], -ft_row["neg_log_loss"]])
+        
+        model_name = 'NN' if model == 'NN' else classical_models[model]
+        models.append(model_name)
+            
+    result = pd.DataFrame(data = log_loss, 
+                          columns = ["No filter", 
+                                     "Best Savitzky–Golay filter"],
+                          index = models)
+    
+    result.sort_values(by = ["No filter"], inplace = True)
+        
+    return result
+            
+    
+def best_results():
+    
+    estimator_path = {}
+
     models = {}
     
     for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
@@ -48,9 +100,12 @@ def best_results():
                         replace=False
                             
                 if replace:
+                    
                     models['NN'] = [int(sv_filter), int(scaler), int(pca),
                                     int(over), -row["neg_log_loss"], 
                                     row["std"]]
+                    
+                    estimator_path['NN'] = file_path
             else:
 
                 for key in classical_models:
@@ -72,6 +127,7 @@ def best_results():
                                                          int(over),
                                                          -row["neg_log_loss"], 
                                                          row["std"]]
+                        estimator_path[key] = file_path
         else:
             print(file_name + " does not exists, please run the gridSearch!")
             break
@@ -83,12 +139,16 @@ def best_results():
         data.append(models[key])
         idxs.append(key)
         
-    return pd.DataFrame(data = data, 
+    df = pd.DataFrame(data = data, 
                         columns = ["Savitzky–Golay filter", 
                                    "Standard scaler",
                                    "PCA (99%)",
                                    "Over sample",
                                    "Log-loss", 
                                    "Standard Deviation"],
-                            index = idxs).sort_values(by = ["Log-loss"])
+                            index = idxs)
+    
+    df.sort_values(by = ["Log-loss"], inplace = True)
+    
+    return df, estimator_path
     

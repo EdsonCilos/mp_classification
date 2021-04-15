@@ -1,0 +1,76 @@
+estimator,filter__degree,filter__window,std,neg_log_loss
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",2,7,0.5667380210442078,-4.209926011488378
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",3,7,0.5667380210442078,-4.209926011488378
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",5,11,0.6515238758191924,-4.2994047068119805
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",4,11,0.6515238758191924,-4.2994047068119805
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",9,11,0.48641785535713833,-4.300103759119196
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",8,11,0.48641785535713833,-4.300103759119196
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",4,7,0.5802197316923186,-4.3446100893452595
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",5,7,0.5802197316923186,-4.3446100893452595
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",6,9,0.508095787638956,-4.344843106780997
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",7,9,0.508095787638956,-4.344843106780997
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",3,11,0.9237449224548758,-4.480226236945095
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",2,3,0.6826688713481033,-4.5685398450900045
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",8,9,0.6826688713481033,-4.5685398450900045
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",10,11,0.6826688713481033,-4.5685398450900045
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",6,7,0.6826688713481033,-4.5685398450900045
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",4,5,0.6826688713481033,-4.5685398450900045
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",4,9,1.0095777217237525,-4.612347123008853
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",2,11,0.754578639146594,-4.614444279930499
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",5,9,1.0092059119624555,-4.7018258183324555
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",3,9,0.9697445500508577,-4.702291853203932
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",2,9,0.9779659330400874,-4.702291853203932
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",7,11,0.7629152760875726,-4.836742913625075
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",2,5,1.2878205633278683,-4.970727939174741
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",3,5,1.2878205633278683,-4.970727939174741
+"DecisionTreeClassifier(ccp_alpha=0, min_impurity_decrease=0,
+                       min_weight_fraction_leaf=0, random_state=0,
+                       splitter='random')",6,11,0.6898693597173929,-4.971193974046217

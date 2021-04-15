@@ -2,7 +2,7 @@
 """
 Created on Tue Apr 13 14:09:51 2021
 
-@author: scien
+@author: Edson Cilos
 """
 #Sklearn modules
 from sklearn.preprocessing import MinMaxScaler
@@ -19,8 +19,11 @@ from imblearn.pipeline import Pipeline
 #Filter preprocessing
 from scipy.signal import savgol_filter
 
+#Config file
+import config
+
 #Fix seed to reproducibility
-seed = 0
+seed = config._seed()
 
 class Savgol_transformer(BaseEstimator, TransformerMixin):
 
@@ -76,3 +79,22 @@ def build_pipe(scaler = '',
                              )
 
     return  Pipeline(pre_pipe), prefix
+
+def pipe_config(file_name):
+    
+    values = file_name.split('_')
+    
+    scaler_list = [x for x in config._scaler_list() if x in values]
+    
+    try:
+        scaler = scaler_list[0]
+    except:
+        scaler = ''
+    
+    sav_filter = True if 'svfilter' in values else False
+    pca = True if 'pca' in values else False
+    over_sample = True if 'over' in values else False
+    
+    return sav_filter, scaler, pca, over_sample
+  
+    
