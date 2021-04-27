@@ -1,0 +1,26 @@
+estimator,filter__degree,filter__window,std,neg_log_loss
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",2,11,0.008996429964210587,-0.2883871491246851
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",3,11,0.0089511175286459,-0.28863105036829223
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",4,11,0.009135059764646104,-0.2925562146187087
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",5,11,0.009214758400940964,-0.2926419015362083
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",3,7,0.007578147634185075,-0.2933348695907573
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",2,7,0.007653693605579221,-0.29334932183010975
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",2,5,0.009606278008236109,-0.2933520964596221
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",3,5,0.00973234487268241,-0.2933588256111872
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",5,9,0.010121000246848104,-0.2943392911261465
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",4,9,0.009965269451750101,-0.2944402123838121
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",7,11,0.010152136440504323,-0.29560698309209765
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",6,11,0.010144919034492788,-0.2956111141395797
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",7,9,0.008247905119102193,-0.2959744965509955
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",6,9,0.00824752577059059,-0.2959772145858874
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",8,9,0.008801489149820933,-0.2959851860607069
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",2,3,0.008801489149820933,-0.2959851860607069
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",6,7,0.008801489149820933,-0.2959851860607069
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",4,5,0.008801489149820933,-0.2959851860607069
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",10,11,0.008801489149820933,-0.2959851860607069
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",8,11,0.0085577449511257,-0.29609566208297566
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",9,11,0.008556756851064405,-0.29609706292585775
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",4,7,0.007999786052712995,-0.2961159150824139
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",5,7,0.008040284556431514,-0.29614758927947
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",3,9,0.05620397921438313,-0.3282009044450999
+"RandomForestClassifier(criterion='entropy', n_estimators=1000, random_state=0)",2,9,0.056559942678824054,-0.32875323277529656

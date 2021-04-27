@@ -22,28 +22,32 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 #Project modules
 from param_grid import build_nn
+from table import best_results
+
+estimator_dic = {'SVC' : SVC, 
+                 'RandomForestClassifier' : RandomForestClassifier, 
+                 'LogisticRegression' : LogisticRegression, 
+                 'KNeighborsClassifier' : KNeighborsClassifier, 
+                 'DecisionTreeClassifier' : DecisionTreeClassifier,
+                 'GaussianNB' : GaussianNB
+                 }
+    
+def best_estimator(model_name):
+    
+    if model_name != 'NN': _check_name(model_name)
+    
+    _, model_path = best_results()
+    model, config = get_1estimator(model_path[model_name], model_name)
+    
+    return model, config
 
 def get_1estimator(file_path, model_name = 'SVC'):
     
-    estimator_dic = {'SVC' : SVC, 
-              'RandomForestClassifier' : RandomForestClassifier, 
-              'LogisticRegression' : LogisticRegression, 
-              'KNeighborsClassifier' : KNeighborsClassifier, 
-              'DecisionTreeClassifier' : DecisionTreeClassifier,
-              'GaussianNB' : GaussianNB}
-    
     if model_name == 'NN':        
         return  _neural_1estimator(file_path)
-        
-    elif model_name not in estimator_dic:
-        
-        raise Exception("Model '{}' not available in the dictionary. Choose one \
-                        of the following: NN, {} {}".format(model_name, 
-                        ', '.join([key for key in estimator_dic]),
-                        '.'))
     
     else:
-    
+        _check_name(model_name)
         df = pd.read_csv(file_path)
         df.fillna('', inplace=True)
     
@@ -77,6 +81,14 @@ def _neural_1estimator(file_path):
                            callbacks = [early_stop],
                            **hyper_params), hyper_params
 
+def _check_name(model_name):
+    if model_name not in estimator_dic:
+        raise Exception("Model '{}' {}. Choose one of the following: NN, {}."
+                        .format(model_name, 
+                                "not available in the dictionary",
+                                ', '.join([key for key in estimator_dic])))
+    
+    
 def _update_estimator_params(columns, dictionary, row):
     
     for col in [x for x in columns if 'estimator__' in x]:

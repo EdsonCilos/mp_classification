@@ -103,7 +103,7 @@ def classical_grid():
     
     #Random_forest
     random_forest ={'estimator': [RandomForestClassifier(random_state = seed)],
-                    'estimator__n_estimators' : [10, 100, 1000],
+                    'estimator__n_estimators' : [10, 50, 100, 500],
                     'estimator__criterion' : ['gini', 'entropy']
     }
     
@@ -135,7 +135,7 @@ def classical_grid():
                                             penalty = 'elasticnet',
                                             multi_class='auto',
                                             random_state = seed)],
-                            'estimator__l1_ratio': np.arange(0.1, 0.9, 0.1),
+                            'estimator__l1_ratio': np.arange(0.1, 1, 0.1),
                             'estimator__C' : c_list.copy()
                             }
 

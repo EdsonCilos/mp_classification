@@ -9,6 +9,7 @@ Created on Mon Aug 24 17:52:03 2020
 import os
 import pandas as pd
 from itertools import product
+from timeit import default_timer as timer
 
 #Sklearn Model Selection
 from sklearn.model_selection import GridSearchCV
@@ -48,9 +49,7 @@ def search(scaler = '',
     
     print('The file name is: ' + file_name)
       
-    cv_fixed_seed = StratifiedKFold(n_splits=4, 
-                                    shuffle = True, 
-                                    random_state = seed)
+    cv_fixed_seed = StratifiedKFold(n_splits = 5, shuffle = False)
 
     print('Running parameter search (It can take a long time) ...')
     search = GridSearchCV(pipe,
@@ -109,6 +108,7 @@ def run():
             
         else:
             print("{0} iteration ({1}/32)...".format(file_name, str(i)))
+            start = timer()
             search(scaler = 'std' if scaler else '', 
                    sav_filter = sv_filter,
                    pca = pca, 
@@ -116,6 +116,8 @@ def run():
                    param_grid = grid, 
                    prefix = 'nn_' if nn else '',
                    n_jobs = 1)
+            end = timer()
+            append_time(file_name, str(end - start))
             
     print("GridSearch finished...")
     print("Building best results table...")
@@ -157,6 +159,7 @@ def run():
         else:
             
             print("{} filter iteration ({}/7)...".format(file_name, j))
+            start = timer()
             search(scaler = scaler, 
                    sav_filter = True,
                    pca = pca, 
@@ -165,6 +168,17 @@ def run():
                    prefix = prefix, 
                    n_jobs = 1,
                    save = True)
+            end = timer()
+            append_time(file_name, str(end - start))
     
     print('GridSearch fully finished.')
+    
+def append_time(file_name, time):
+    with open(os.path.join('results', "time.csv"), "a+") as file_object:
+        file_object.seek(0)
+        data = file_object.read(100)
+        if len(data) > 0 :
+            file_object.write("\n")
+        file_object.write("{},{}".format(file_name, time))
+
         

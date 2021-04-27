@@ -27,7 +27,7 @@ seed = config._seed()
 
 class Savgol_transformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, window = 11, degree = 10):
+    def __init__(self, window = 11, degree = 3):
         assert window > degree, "window must be less than poly. degree"
         self.window = window
         self.degree = degree
@@ -52,7 +52,7 @@ def build_pipe(scaler = '',
     if sav_filter:
         prefix += 'svfilter_'
         pre_pipe.insert(-1, ('filter', 
-                             Savgol_transformer(window = 11, degree=10)))        
+                             Savgol_transformer(window = 11, degree=3)))        
     
     scaler_dictionary = {
         'std' : StandardScaler(), 
