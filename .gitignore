@@ -1,7 +1,7 @@
 results_old
 __pycache__
 .git
-.vscode/settings.json
+.vscode
 .ipynb_checkpoints
 test.py
 *.pyc
