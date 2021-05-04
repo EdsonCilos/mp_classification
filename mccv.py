@@ -13,16 +13,19 @@ from os import path
 from sklearn.model_selection import train_test_split
 from scipy.signal import savgol_filter
 from sklearn.preprocessing import StandardScaler 
+from sklearn.decomposition import PCA
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import log_loss
 from sklearn.svm import SVC 
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.base import clone
-from utils import build_row
+from timeit import default_timer as timer
 
 #load project modules
-from neural_search import build_model
+from param_grid import build_nn
+from grid_search import append_time
+from utils import build_row
 
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import EarlyStopping
@@ -33,14 +36,14 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 #Beta version!
 
+def mccv_path():
+    return os.path.join('results', 'mccv')
+
 def results_total(X, name, sufix, temp=True): #Arrumar!
  
    posfix = '_temp' if temp else '' 
     
-   filepath = os.path.join(os.getcwd(),  
-                           'mccv_data',
-                           name,
-                           sufix +  posfix + '.csv')
+   filepath = os.path.join(mccv_path(), name, sufix +  posfix + '.csv')
    
    pd.DataFrame(data = X, columns= ['Cross_Entropy_train', 
                                   'Cross_Entropy_val',
@@ -48,13 +51,10 @@ def results_total(X, name, sufix, temp=True): #Arrumar!
                                   'Accuracy_val']).to_csv(filepath,index=False)
 
 def results(X, name, sufix, temp=True):
-    
+    3
     posfix = '_temp' if temp else '' 
     
-    filepath = os.path.join(os.getcwd(),  
-                           'mccv_data',
-                           name,
-                           sufix + posfix + '.csv')
+    filepath = os.path.join(mccv_path(), name, sufix + posfix + '.csv')
    
     pd.DataFrame(data = X).to_csv(filepath, header=False, index=False)
 
@@ -66,7 +66,7 @@ while(do):
     
     simulate = False
     
-    print("Choose an option: \n \n 0 - Leave \n 1- SVC \n 2 - RF \n 3 - NN \n")
+    print("Choose an option: \n \n 0 - Leave \n 1- SVC \n 2 - LR \n 3 - NN \n")
     n= int(input("input: "))
     
     base_model = None
@@ -88,12 +88,12 @@ while(do):
         
     elif(n == 2):
         
-         print("Random Forest selected \n")
-         estimators = int(input("Type the number of estimators: \n"))
-         base_model = RandomForestClassifier(n_estimators=estimators, 
-                                        criterion = 'entropy')
+         print("Logistic Regression selected \n")
+         c = float(input("Type the regularization parameter C: "))
+         
+         base_model = LogisticRegression(C=c, solver='newton-cg')
 
-         name =  "_".join(["RF", str(estimators)])
+         name =  "_".join(["LR", str(c)])
          simulate = True
          
     elif(n == 3):
@@ -126,7 +126,7 @@ while(do):
                       }
 
             
-            base_model = KerasClassifier(build_model, 
+            base_model = KerasClassifier(build_nn, 
                                     epochs = 1000,
                                     callbacks = [EarlyStopping(monitor='loss', 
                                                             patience= 3,
@@ -136,7 +136,7 @@ while(do):
                                  )
             
             
-            name_list = ['NN', activation] + [str(x) for x in 
+            name_list = [activation] + [str(x) for x in 
                                               [layers, neurons, momentum, lr]]
             
             name =  "_".join(name_list)
@@ -147,6 +147,23 @@ while(do):
         print("Option not available")
         
     if(simulate):
+        
+        sv_filter = bool(int(input(
+            "Use Savitzky-Golay filter? (0 - no, 1 - yes) \n")))
+        pca = bool(int(input("Use pca?  (0 - no, 1 - yes) \n")))
+        over = bool(int(input("Use Oversample?  (0 - no, 1 - yes) \n")))
+        std = bool(int(input("Use Standard Scaler?  (0 - no, 1 - yes) \n")))
+        
+        prefix = 'nn_' if n == 3 else ''
+        sv = 'svfilter_' if sv_filter else '' 
+        sc = 'std_' if std else ''
+        pc = 'pca_' if pca else ''
+        ov = 'over_' if over else ''
+        
+        name = prefix + sv + sc +  pc + ov + name
+        
+        print('Simulation {}'.format(name))
+        
         
         encoder_path = os.path.join('data', 'enconder.sav')
         loaded_model = pickle.load(open(encoder_path, 'rb'))
@@ -166,7 +183,7 @@ while(do):
         
         b = False
         
-        folder = os.path.join('mccv_data', name)
+        folder = os.path.join(mccv_path(), name)
         ts = os.path.join(folder, "total_score_temp.csv")
         prob = os.path.join(folder, "probability_temp.csv")
         cm = os.path.join(folder, "cross_matrix_temp.csv")
@@ -214,8 +231,10 @@ while(do):
             results(cross_matrix, name, 'cross_matrix')
             results(probability, name, 'probability')
             results(detailed_score, name, 'detailed_score')
+            
+        start = timer()
                 
-        for i in range(m, 17000): 
+        for i in range(m, 1700): 
     
             print("Iteration number: " + str(i) + "---------" + name)
     
@@ -239,13 +258,24 @@ while(do):
                                                       stratify=y_train_temp, 
                                                       test_size= 1/3)
     
-            scaler = StandardScaler()
-            X_train  = scaler.fit_transform(savgol_filter(X_train, 11, 10))
-            
-            X_val = scaler.transform(savgol_filter(X_val, 11, 10))
-    
-            ros = RandomOverSampler()
-            X_train, y_train = ros.fit_resample(X_train, y_train)
+            if(sv_filter):
+                X_train = savgol_filter(X_train, 11, 3)
+                X_val = savgol_filter(X_val, 11, 3)
+                
+            if(std):
+                scaler = StandardScaler()
+                X_train = scaler.fit_transform(X_train)
+                X_val = scaler.transform(X_val)
+                
+            if(pca):
+                pca = PCA(n_components = 0.99)
+                X_train = pca.fit_transform(X_train)
+                X_val = pca.transform(X_val)
+                
+            if(over):
+                ros = RandomOverSampler()
+                X_train, y_train = ros.fit_resample(X_train, y_train)
+                
             
             model = clone(base_model)
             model.fit(X_train, y_train)
@@ -289,6 +319,8 @@ while(do):
             
             #Finish loop
         
+        end = timer()
+        append_time("MCCV/" + name, str(end - start))
         print("Finishing job....")
         print("Saving....")
         results_total(total_score, name, 'total_score', temp=False)
@@ -302,30 +334,3 @@ while(do):
         os.remove(ds)
         print("job " + name + " done with success!")
         
-        
-        
-                
-            #Depois usar na documentação (via doc-string)
-            #salvar resultados da probabilidade!
-    
-
-            #File 1: log_loss_train, log_loss_val, accuracy_train, accuracy_val
-            #Cada linha corresponde a um split
-            
-            
-            #File 2: Proability multy-matrix
-            #Colunas (196 = 14*14 ao todo)
-            #p_(0,0), p_(0,1), ..., p_(0,13), p_(1,0), ....., p(13,13)
-            
-            #p_(i,j) =
-            #probabilidade média atribuiada pelo algoritmo class
-            #de amostras da classe i como sendo da classe j
-            #Idealmente a matriz 14x14 deveria ser aproximadamente a identidade
-        
-            
-            #linhas: resultado de cada split
-            
-            #File 3: (sensitivity, specificity, precision, f1_score) 
-            #  Arquivo csv com 4*14 colunas
-            # Cada linha corresponde a um split
-            

@@ -76,10 +76,10 @@ def best_results():
 
     models = {}
     
-    for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
+    for scaler, pca, over, nn in product([False, True], repeat = 4):
         
         file_name = f_name(nn=nn,
-                           sv_filter=sv_filter, 
+                           sv_filter= False, 
                            scaler=scaler, 
                            pca= pca, 
                            over_sample= over)
@@ -96,12 +96,12 @@ def best_results():
                 row = df.iloc[0]
                 
                 if 'NN' in models:
-                    if models['NN'][4] <= -row["neg_log_loss"]: 
+                    if models['NN'][3] <= -row["neg_log_loss"]: 
                         replace=False
                             
                 if replace:
                     
-                    models['NN'] = [int(sv_filter), int(scaler), int(pca),
+                    models['NN'] = [int(scaler), int(pca),
                                     int(over), -row["neg_log_loss"], 
                                     row["std"]]
                     
@@ -116,13 +116,12 @@ def best_results():
                     replace = True
                     
                     if classical_models[key] in models:
-                        if (models[classical_models[key]][4]
+                        if (models[classical_models[key]][3]
                             <= -row["neg_log_loss"]): 
                             replace=False           
                             
                     if replace:
-                        models[classical_models[key]] = [int(sv_filter), 
-                                                         int(scaler),
+                        models[classical_models[key]] = [int(scaler),
                                                          int(pca),
                                                          int(over),
                                                          -row["neg_log_loss"], 
@@ -140,8 +139,7 @@ def best_results():
         idxs.append(key)
         
     df = pd.DataFrame(data = data, 
-                        columns = ["Savitzky–Golay filter", 
-                                   "Standard scaler",
+                        columns = ["Standard scaler",
                                    "PCA (99%)",
                                    "Over sample",
                                    "Log-loss", 

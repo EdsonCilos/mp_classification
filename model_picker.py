@@ -39,7 +39,7 @@ def best_estimator(model_name):
     _, model_path = best_results()
     model, config = get_1estimator(model_path[model_name], model_name)
     
-    return model, config
+    return model, config, model_path[model_name]
 
 def get_1estimator(file_path, model_name = 'SVC'):
     

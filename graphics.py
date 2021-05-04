@@ -20,8 +20,12 @@ import seaborn as sns
 #Project packages
 from utils import classes_names
 from table import best_results
+from mccv import mccv_path
+
 
 #Still beta, several updates required!
+
+mccv_path = mccv_path()
 
 def qq_plot(data):
     return qq(data, line='s')
@@ -171,33 +175,14 @@ def log_loss_table():
         
 def log_loss_row(name, alpha = 1e-4):
     
-    df = pd.read_csv(os.path.join('mccv_data', name,'total_score.csv'))
+    df = pd.read_csv(os.path.join('results', 'mccv', name,'total_score.csv'))
     
     return [np.mean(df[df.columns[1]]), np.std(df[df.columns[1]])]
 
 
 def total_score_plot_all(alpha = 1e-4):
     
-    _total_score_plot(['SVC_linear_0.001',
-             'SVC_linear_0.0015',
-             'SVC_linear_0.002',
-             'SVC_linear_0.0025'
-             ],'SVC_linear', alpha)
-    
-    _total_score_plot(['SVC_rbf_1.0',
-             'SVC_rbf_1.25',
-             'SVC_rbf_1.44'
-             ],'SVC_rbf', alpha)
-    
-    _total_score_plot(['RF_100',
-             'RF_500',
-             'RF_1000'
-             ],'RF', alpha)
-    
-    _total_score_plot(['NN_sigmoid_1_50_0.1_0.1',
-             'NN_tanh_2_150_0.1_0.01',
-             ],'NN', alpha = 1e-4)
-    
+    _total_score_plot(mccv_files(), "Best models", alpha)
     
 def _total_score_plot(name_list, main_name, alpha):
     
@@ -205,7 +190,7 @@ def _total_score_plot(name_list, main_name, alpha):
 
     for name in name_list:
         
-        df = pd.read_csv(os.path.join('mccv_data', name,'total_score.csv'))
+        df = pd.read_csv(os.path.join(mccv_path, name,'total_score.csv'))
         
         n = df.shape[0]
         
@@ -275,7 +260,7 @@ def total_score_plot(df_tuples, name):
 
 def best_model_results(model_name = 'SVC_linear_0.002'):
     
-    path = os.path.join('mccv_data', model_name)
+    path = os.path.join(mccv_path, model_name)
     
     probability_heatmap(pd.read_csv(os.path.join(path, 'probability.csv')),
                         model_name)
@@ -409,4 +394,9 @@ def final_table():
 
         
     return df
+
+def mccv_files():
+    return [model for model in os.listdir(mccv_path) if 
+            os.path.isdir(os.path.join(os.path.abspath("."), model))  ]
+
         

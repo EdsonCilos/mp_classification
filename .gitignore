@@ -1,6 +1,7 @@
-mccv_data
-results/_neural
+results_old
+__pycache__
+.git
 .vscode/settings.json
-__pycache__/grid_search.cpython-38.pyc
-__pycache__/neural_search.cpython-38.pyc
+.ipynb_checkpoints
 test.py
+*.pyc

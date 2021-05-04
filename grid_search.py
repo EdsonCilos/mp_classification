@@ -71,7 +71,7 @@ def search(scaler = '',
     
     if save:
         
-        folder = os.path.join(os.getcwd(), 'results')
+        folder = os.path.join('results')
     
         if not os.path.exists(folder):
             os.makedirs(folder)
@@ -89,28 +89,33 @@ def run():
     print('Steps: (1) GridSearch across several combinations \n \
           (2) GridSearch searching for best filters')
           
-    for sv_filter, scaler, pca, over, nn in product([False, True], repeat = 5):
+    for scaler, pca, over, nn in product([False, True], repeat = 4):
         
         i += 1
         
         grid = neural_grid() if nn else classical_grid()
         
         file_name = f_name(nn=nn,
-                           sv_filter=sv_filter, 
+                           sv_filter=False, 
                            scaler=scaler, 
                            pca= pca, 
                            over_sample= over)
         
-        file_path = os.path.join(os.getcwd(), 'results', file_name)
+        folder = os.path.join('results')
+    
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+            
+        file_path = os.path.join(folder, file_name)
         
         if os.path.isfile(file_path):
             print(file_name + " already exists, iteration was skipped ...")
             
         else:
-            print("{0} iteration ({1}/32)...".format(file_name, str(i)))
+            print("{0} iteration ({1}/16)...".format(file_name, str(i)))
             start = timer()
             search(scaler = 'std' if scaler else '', 
-                   sav_filter = sv_filter,
+                   sav_filter = False,
                    pca = pca, 
                    over_sample = over, 
                    param_grid = grid, 
@@ -145,12 +150,12 @@ def run():
         prefix = 'ft_{}_'.format(model)
         
         file_name = prefix  + f_name(nn = False,
-                                     sv_filter = True, 
+                                     sv_filter = False,
                                      scaler = scaler, 
                                      pca = pca, 
                                      over_sample = over_sample)
         
-        file_path = os.path.join(os.getcwd(), 'results', file_name)
+        file_path = os.path.join('results', file_name)
         
         if os.path.isfile(file_path):
             print("{} already exists, filter iteration ({}/7) was skipped ..."
@@ -160,15 +165,21 @@ def run():
             
             print("{} filter iteration ({}/7)...".format(file_name, j))
             start = timer()
-            search(scaler = scaler, 
-                   sav_filter = True,
-                   pca = pca, 
-                   over_sample = over_sample, 
-                   param_grid = param_grid, 
-                   prefix = prefix, 
-                   n_jobs = 1,
-                   save = True)
+            
+            results = search(scaler = scaler, 
+                             sav_filter = True,
+                             pca = pca, 
+                             over_sample = over_sample, 
+                             param_grid = param_grid, 
+                             prefix = prefix, 
+                             n_jobs = 1,
+                             save = False)
+            
+            print('Search is finished, saving results in ' + file_path)
+            results.to_csv(file_path, index = False)
+            
             end = timer()
+            
             append_time(file_name, str(end - start))
     
     print('GridSearch fully finished.')
