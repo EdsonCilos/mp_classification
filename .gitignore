@@ -1,8 +1,0 @@
-.gitignore
-results_old
-__pycache__
-.git
-.vscode
-.ipynb_checkpoints
-test.py
-*.pyc
