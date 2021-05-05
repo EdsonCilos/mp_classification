@@ -20,7 +20,7 @@ from utils import file_name as f_name
 from param_grid import neural_grid, classical_grid, filter_grid
 from pipeline import build_pipe, pipe_config
 from table import best_results
-from model_picker import get_1estimator
+from model_picker import get_1estimator, best_estimator
 
 seed = 0 #In the future: move to a config file
 
@@ -82,7 +82,7 @@ def search(scaler = '',
     
     return results
 
-def run():
+def run_gs():
     
     i = 0
     
@@ -183,6 +183,7 @@ def run():
             append_time(file_name, str(end - start))
     
     print('GridSearch fully finished.')
+    
     
 def append_time(file_name, time):
     with open(os.path.join('results', "time.csv"), "a+") as file_object:

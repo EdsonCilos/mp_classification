@@ -45,23 +45,6 @@ def build_row(X_test, y_test, y_pred):
   
     return result        
 
-def Remove_less_representative(dataset, remove_n):
-
-  less_rep = dataset["label"].value_counts()
-
-  assert less_rep.shape[0] > remove_n, \
-  f"There are {less_rep.shape[0]} classes, \
-  not possible remove {remove_n} of them"
-
-  less_rep = less_rep[less_rep.shape[0] - remove_n:]
-
-  remove_idxs = [i for i, row in dataset.iterrows() 
-  if row["label"] in less_rep.index]
-
-  new_dataset = dataset.drop(index=remove_idxs, axis=0, inplace=False)
-
-  return new_dataset
-
 def file_name(nn = False, sv_filter=False, scaler=False, 
               pca=False, over_sample=False):
     

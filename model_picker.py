@@ -41,7 +41,7 @@ def best_estimator(model_name):
     
     return model, config, model_path[model_name]
 
-def get_1estimator(file_path, model_name = 'SVC'):
+def get_1estimator(file_path, model_name = 'NN'):
     
     if model_name == 'NN':        
         return  _neural_1estimator(file_path)

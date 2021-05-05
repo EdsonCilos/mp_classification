@@ -9,6 +9,7 @@ Created on Tue Mar 23 08:50:53 2021
 import numpy as np
 
 #Sklearn API
+
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
@@ -155,3 +156,4 @@ def classical_grid():
     return [decision_tree, gaussian_nb, knn, random_forest,
             logistic_regression_1, logistic_regression_2, 
             logistic_regression_3, svc_1, svc_2]
+    

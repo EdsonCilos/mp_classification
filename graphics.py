@@ -20,18 +20,21 @@ import seaborn as sns
 #Project packages
 from utils import classes_names
 from table import best_results
-from mccv import mccv_path
+from config import _mccv_path
 
 
 #Still beta, several updates required!
 
-mccv_path = mccv_path()
+#Best model path: 
+best_path = os.path.join('results', 'mccv', 'pca_over_SVC_linear_10.0', 
+                    'detailed_score.csv')
+
+mccv_path = _mccv_path()
 
 def qq_plot(data):
     return qq(data, line='s')
 
-#This function will replace gs_heatmap soon
-def gs_heatmap2(output_name = 'gs_table'):
+def gs_heatmap(output_name = 'gs_table'):
     
     df, _ = best_results()
     
@@ -58,78 +61,7 @@ def gs_heatmap2(output_name = 'gs_table'):
     return df
         
         
-#Deprecated
-def gs_heatmap(names = ['gs', 'pca_gs', 'pca_over_gs', 'over_gs'],
-               output_name = 'gs'):
-    
-    models = {'SVC' : 'SVC', 
-              'RandomForestClassifier' : 'RF', 
-              'LogisticRegression' : 'LR', 
-              'KNeighborsClassifier' : 'KNN', 
-              'DecisionTreeClassifier' : 'DT',
-              'GaussianNB' : 'GB'}
-    
-    
-    results_path = os.path.join(os.getcwd(), 'results')
-    
-    df_list = {}
-    
-    for name in names:
-        gs_path = os.path.join(results_path, name + '.csv')
-        df_list[name] = pd.read_csv(gs_path)
-    
-        
-    c_map = plt.get_cmap('YlGnBu_r')
-    c_map = ListedColormap(c_map(np.linspace(0.5, 0.8, 256)))
-    
-    
-    #fig = plt.figure()
-
-    fig, axs = plt.subplots(1, 4, figsize=(16, 5))
-    
-    i = 0
-    
-    for name in df_list:
-        
-        ax = axs[i]
-        i += 1
-        
-        
-        df = df_list[name]
-        
-        rows = []
-        idxs = []
-    
-        for key in models:
-        
-            row = next(r  for _, r  in df.iterrows() if key in r["estimator"])
-        
-            idxs.append(models[key])
-        
-            rows.append([-row["neg_log_loss"], row["std"]])
-        
-    
-        df_ = pd.DataFrame(data = rows, 
-                           columns = ["Log-loss", "Standard Deviation"],
-                           index = idxs)
-    
-        df_.sort_values(by = ["Log-loss"], inplace = True)
-        
-        draw_bar = True if i == 4 else False
-
-        sns.heatmap(df_, annot=True, linewidths= 1, cbar=draw_bar,
-                    cmap=c_map, ax = ax, fmt='.4f')
-        
-        ax.set_title('Best model: ' + name )
-    
-    fig.savefig(os.path.join(results_path, output_name + '.png'),
-                dpi = 1200,
-                bbox_inches = "tight")
-    
-    return df_list
-   
-        
-
+#Need update
 def log_loss_table():
     
     columns = ['Log-loss (avarage)', 'Standard deviation']
@@ -181,7 +113,6 @@ def log_loss_row(name, alpha = 1e-4):
 
 
 def total_score_plot_all(alpha = 1e-4):
-    
     _total_score_plot(mccv_files(), "Best models", alpha)
     
 def _total_score_plot(name_list, main_name, alpha):
@@ -212,7 +143,6 @@ def _total_score_plot(name_list, main_name, alpha):
             ' ±' +  str(round(adjust, 5))
         
         df_tuples.append((df, label1, label2))
-    
     total_score_plot(df_tuples, main_name)
     
         
@@ -258,7 +188,7 @@ def total_score_plot(df_tuples, name):
     plt.close()
     
 
-def best_model_results(model_name = 'SVC_linear_0.002'):
+def best_model_results(model_name = 'nn_std_pca_over_sigmoid_1_50_0.7_0.1'):
     
     path = os.path.join(mccv_path, model_name)
     
@@ -332,6 +262,7 @@ def detailed_score_heatmap(df, name):
     ax.set_title(name + ' Scores')
 
     fig.savefig(os.path.join('results', name + '_detailed_score.png'),
+                dpi = 1200,
                 bbox_inches = "tight")
     
     
@@ -361,26 +292,33 @@ def final_table():
             
     w0 = np.array(w0)    
         
-    #Load model's sensitivity mccv data
+    #Load model's sensitivity mccv data (using Kedzierski et. al methodology)
     df1 = pd.read_csv(os.path.join('results', 
-                                  'final_model_mhv_all_data_detailed_score.csv'),
+                                  'final_model_mccv_all_data_detailed_score.csv'),
                       index_col=0)
                                        
     w1 = df1.mean(axis=0).values.reshape(classes, 4)
-    w1 = np.around(w1, decimals=3)[:, 0] 
-        
-    #Load model's sensitivity test result
-    df2 = pd.read_csv(os.path.join('results','final_test_detailed_score.csv'))
+    w1 = np.around(w1, decimals=3)[:, 0]
+    
+    #Load MCCV results (best model)
+    df2 = pd.read_csv(best_path) 
     w2 = df2.mean(axis=0).values.reshape(classes, 4)
     w2 = np.around(w2, decimals=3)[:, 0] 
+        
+    #Load model's sensitivity test result
+    df3 = pd.read_csv(os.path.join('results','final_test_detailed_score.csv'))
+    w3 = df3.mean(axis=0).values.reshape(classes, 4)
+    w3 = np.around(w3, decimals=3)[:, 0] 
     
-    w = np.stack((w0, w1, w2), axis=0)
+    
+    w = np.stack((w0, w1, w2, w3), axis=0)
     
     df = pd.DataFrame(data = w,
                         columns= names,
-                        index = ["Kedzierski et. al", 
-                                 "SVC MCCV", 
-                                 "SVC Final test"])
+                        index = ["Kedzierski et al.", 
+                                 "SVC + Kedzierski et al", 
+                                 "SVC + MCCV",
+                                 "SelfLearning + SVC Final test"])
     
     fig, ax = plt.subplots(figsize=(12, 5))
     ax.set_title('Sensitivity comparison')
@@ -388,8 +326,8 @@ def final_table():
     sns.heatmap(df,
                 annot=True, linewidths= 0.05, cmap='YlGnBu', ax = ax)
     
-    fig.savefig(os.path.join('results', 
-                             'SVC_linear_0.002' + '_final_table.png'),
+    fig.savefig(os.path.join('results', 'sensitivity_final_table.png'),
+                dpi = 1200,
                 bbox_inches = "tight")
 
         
@@ -397,6 +335,6 @@ def final_table():
 
 def mccv_files():
     return [model for model in os.listdir(mccv_path) if 
-            os.path.isdir(os.path.join(os.path.abspath("."), model))  ]
+            os.path.isdir(os.path.join(mccv_path, model))  ]
 
         

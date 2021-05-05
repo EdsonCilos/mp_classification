@@ -26,6 +26,7 @@ from timeit import default_timer as timer
 from param_grid import build_nn
 from grid_search import append_time
 from utils import build_row
+from config import _mccv_path
 
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import EarlyStopping
@@ -36,14 +37,13 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 #Beta version!
 
-def mccv_path():
-    return os.path.join('results', 'mccv')
+mccv_path = _mccv_path()
 
 def results_total(X, name, sufix, temp=True): #Arrumar!
  
    posfix = '_temp' if temp else '' 
     
-   filepath = os.path.join(mccv_path(), name, sufix +  posfix + '.csv')
+   filepath = os.path.join(mccv_path, name, sufix +  posfix + '.csv')
    
    pd.DataFrame(data = X, columns= ['Cross_Entropy_train', 
                                   'Cross_Entropy_val',
@@ -54,7 +54,7 @@ def results(X, name, sufix, temp=True):
     3
     posfix = '_temp' if temp else '' 
     
-    filepath = os.path.join(mccv_path(), name, sufix + posfix + '.csv')
+    filepath = os.path.join(mccv_path, name, sufix + posfix + '.csv')
    
     pd.DataFrame(data = X).to_csv(filepath, header=False, index=False)
 
@@ -183,7 +183,7 @@ while(do):
         
         b = False
         
-        folder = os.path.join(mccv_path(), name)
+        folder = os.path.join(mccv_path, name)
         ts = os.path.join(folder, "total_score_temp.csv")
         prob = os.path.join(folder, "probability_temp.csv")
         cm = os.path.join(folder, "cross_matrix_temp.csv")

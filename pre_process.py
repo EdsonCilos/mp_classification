@@ -95,8 +95,8 @@ def get_path(sample_code):
             
      return os.path.join('data', 'IR_Spectra', name[1], prefix, name[2], 
                          name[3] + ".txt")
-    
-    
+     
+            
 def pre_process(threshold = 5, override = False):
       
   dataset = pd.read_csv(os.path.join(os.getcwd(), "data", "d4_rebuild.csv"))
@@ -114,7 +114,7 @@ def pre_process(threshold = 5, override = False):
       if row["label"] in less_rep:
           dataset.at[i, 'label'] = 'Unknown'
 
-  print('\n \n \n New class frequency:') 
+  print('\n \n \n New class frequency (after removing Unkown):') 
   print(dataset["label"].value_counts())
   
   encoder = LabelEncoder()

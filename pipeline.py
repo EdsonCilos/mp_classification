@@ -4,6 +4,9 @@ Created on Tue Apr 13 14:09:51 2021
 
 @author: Edson Cilos
 """
+import os
+import pandas as pd
+
 #Sklearn modules
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
@@ -23,8 +26,8 @@ from scipy.signal import savgol_filter
 import config
 
 #Fix seed to reproducibility
-seed = config._seed()
-
+seed = config._seed() 
+        
 class Savgol_transformer(BaseEstimator, TransformerMixin):
 
     def __init__(self, window = 11, degree = 3):
