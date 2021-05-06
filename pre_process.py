@@ -17,9 +17,11 @@ from sklearn.preprocessing import LabelEncoder
 
 #To save models
 import pickle
+#Config module
+import config
 
 
-seed = 0
+seed = config._seed()
 
 def check_in(values_list, name):
     for value in values_list:

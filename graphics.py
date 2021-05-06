@@ -9,7 +9,9 @@ Created on Sat Aug  1 08:02:39 2020
 import os
 import numpy as np
 import pandas as pd
-from scipy.stats import t
+
+#Sklearning package
+from sklearn.preprocessing import MinMaxScaler
 
 #Graphics packages
 from matplotlib import pyplot as plt
@@ -60,62 +62,12 @@ def gs_heatmap(output_name = 'gs_table'):
         
     return df
         
-        
-#Need update
-def log_loss_table():
-    
-    columns = ['Log-loss (avarage)', 'Standard deviation']
-    
-    algorithms = ['SVC_linear_0.001',
-             'SVC_linear_0.0015',
-             'SVC_linear_0.002',
-             'SVC_linear_0.0025',
-             'SVC_rbf_1.0', 
-             'SVC_rbf_1.25',
-             'SVC_rbf_1.44',
-             'RF_100',
-             'RF_500',
-             'RF_1000',
-             ]
-    
 
-    rows = []
+def total_score_plot_all():
+    _total_score_plot(mccv_files(), "Best models")
     
-    for name in algorithms:
-        rows.append(log_loss_row(name))
-            
-    df = pd.DataFrame(data = np.round(rows, 4), 
-                      columns = columns, 
-                      index = algorithms)
     
-    df.sort_values(by = 'Log-loss (avarage)', ascending=True, inplace = True)
-    
-        
-    c_map = plt.get_cmap('YlGnBu')
-    c_map = ListedColormap(c_map(np.linspace(0.1, 0.7, 256)))
-
-    fig, ax = plt.subplots(figsize=(5, 7))
-    sns.heatmap(df, annot=True, linewidths= 1, cmap=c_map, ax = ax, fmt='.4f')
-    ax.set_title('Cross entropy')
-    
-    fig.savefig(os.path.join('results', 'log_loss.png'), 
-                dpi = 1200,
-                bbox_inches = "tight")
-    
-    return df
-    
-        
-def log_loss_row(name, alpha = 1e-4):
-    
-    df = pd.read_csv(os.path.join('results', 'mccv', name,'total_score.csv'))
-    
-    return [np.mean(df[df.columns[1]]), np.std(df[df.columns[1]])]
-
-
-def total_score_plot_all(alpha = 1e-4):
-    _total_score_plot(mccv_files(), "Best models", alpha)
-    
-def _total_score_plot(name_list, main_name, alpha):
+def _total_score_plot(name_list, main_name):
     
     df_tuples = []
 
@@ -123,30 +75,24 @@ def _total_score_plot(name_list, main_name, alpha):
         
         df = pd.read_csv(os.path.join(mccv_path, name,'total_score.csv'))
         
-        n = df.shape[0]
-        
-        c = t.ppf(1 - alpha/2, n - 1, loc=0, scale=1)
         std = np.std(df[df.columns[1]])
         mean = np.mean(df[df.columns[1]])
-        adjust = c*std/np.sqrt(n)
         
         #label1 = name
         label1 = name + ' loss: ' + str(round(mean, 5)) + \
-            ' ±' +  str(round(adjust, 5))
+            ', std: ' +  str(round(std, 5))
             
         std = np.std(df[df.columns[3]])
         mean = np.mean(df[df.columns[3]])
-        adjust = c*std/np.sqrt(n)
         
         #label2 = name
         label2 = name + ' score: ' + str(round(mean, 5)) + \
-            ' ±' +  str(round(adjust, 5))
+             ', std: ' +  str(round(std, 5))
         
         df_tuples.append((df, label1, label2))
     total_score_plot(df_tuples, main_name)
     
         
-
 def total_score_plot(df_tuples, name):
         
     sns.set_palette(sns.color_palette("hls", len(df_tuples)))
@@ -187,8 +133,54 @@ def total_score_plot(df_tuples, name):
     plt.show()
     plt.close()
     
+def self_heatmap():
+    
+    df = pd.read_csv(os.path.join('results', 'SelfTraining.csv'), index_col=0)
+    df.index.name = None
+    df.drop(['base_path'], axis=1, inplace=True)
+    
+    rename = {'time' : 'Time (s)',
+              'amount_labaled' : 'Samples labeled',
+              'accuracy' : 'Accuracy',
+              'log_loss' : 'Log-los',
+              'std_log_loss' : 'log-los (std)'}
+    
+    df.rename(columns = rename, inplace=True)
+    
+    scaler = MinMaxScaler()
+    
+    df_dual = pd.DataFrame(data = scaler.fit_transform(df),
+                           columns = df.columns,
+                           index = df.index)
+    
+    heat0 = sns.heatmap(df, annot=True, linewidths= 1, fmt='.3f') 
+                 
+    fig, ax = plt.subplots(figsize=(12, 5))
 
-def best_model_results(model_name = 'nn_std_pca_over_sigmoid_1_50_0.7_0.1'):
+    color_map = plt.get_cmap('YlGnBu')
+    color_map = ListedColormap(color_map(np.linspace(0.1, 0.75, 256)))
+    
+    heat = sns.heatmap(df_dual, annot=True, linewidths= 1,
+                       cmap= color_map, ax = ax, fmt='.3f')
+    
+    colorbar = ax.collections[0].colorbar
+    colorbar.set_ticks([0.1, 0.5, 1])
+    colorbar.set_ticklabels(['Low', 'Middle', 'High'])
+    
+    for t in range(len(heat0.texts)):
+        txt = heat0.texts[t].get_text()
+        heat.texts[t].set_text(txt)
+    
+
+    
+    ax.set_title('SelfTraining Table (5-fold cross validation)')
+    fig.savefig(os.path.join('results', 'SelfTraining_table.png'),
+                dpi = 1200,)
+    
+    
+    
+
+def best_model_results(model_name = 'pca_over_SVC_linear_10.0'):
     
     path = os.path.join(mccv_path, model_name)
     

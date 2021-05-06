@@ -20,9 +20,12 @@ from utils import file_name as f_name
 from param_grid import neural_grid, classical_grid, filter_grid
 from pipeline import build_pipe, pipe_config
 from table import best_results
-from model_picker import get_1estimator, best_estimator
+from model_picker import get_1estimator
 
-seed = 0 #In the future: move to a config file
+#Config module
+import config
+
+seed = config._seed()
 
 def search(scaler = '', 
            sav_filter = False,
@@ -165,7 +168,6 @@ def run_gs():
             
             print("{} filter iteration ({}/7)...".format(file_name, j))
             start = timer()
-            
             results = search(scaler = scaler, 
                              sav_filter = True,
                              pca = pca, 
@@ -173,8 +175,7 @@ def run_gs():
                              param_grid = param_grid, 
                              prefix = prefix, 
                              n_jobs = 1,
-                             save = False)
-            
+                             save = False)            
             print('Search is finished, saving results in ' + file_path)
             results.to_csv(file_path, index = False)
             
