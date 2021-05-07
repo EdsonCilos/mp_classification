@@ -310,7 +310,7 @@ def final_table():
                         index = ["Kedzierski et al.", 
                                  "SVC + Kedzierski et al", 
                                  "SVC + MCCV",
-                                 "SelfLearning + SVC Final test"])
+                                 "SVC Final test"])
     
     fig, ax = plt.subplots(figsize=(12, 5))
     ax.set_title('Sensitivity comparison')

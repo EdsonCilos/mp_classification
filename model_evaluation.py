@@ -9,7 +9,6 @@ Created on Thu Aug 20 10:26:35 2020
 import os
 import numpy as np
 import pandas as pd
-from sklearn.semi_supervised import SelfTrainingClassifier
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -22,13 +21,13 @@ from sklearn.svm import SVC
 #Project modules
 from utils import build_row, load_encoder
 import graphics
+import config
 
 #Fix the seed of the evaluation
-seed = 0
+seed = config._seed()
 
 #Selected model: SelfTraining + SVC + pca + oversample
-pre_model = SVC(kernel='linear', C = 10, probability = True, random_state = 0)
-model = SelfTrainingClassifier(pre_model, threshold = 0.9,verbose=True)                               
+model = SVC(kernel='linear', C = 10, probability = True, random_state = 0)
 scaler = False
 pc = True
 over_sample = True
@@ -39,12 +38,7 @@ def final_test():
     X_train = pd.read_csv(os.path.join('data', 'X_train.csv')) 
     y_train = pd.read_csv(os.path.join('data', 'y_train.csv')).values.ravel()
     
-    #unlabeled data
-    X_unlabel = pd.read_csv(os.path.join('data', 'unlabeled_data.csv')) 
-    X_unlabel.drop(['3997.91411'], axis = 1, inplace=True)
-    y_unlabel = -1*np.ones(X_unlabel.shape[0])
-    
-    
+        
     X_test = pd.read_csv(os.path.join('data', 'X_test.csv')) 
     y_test = pd.read_csv(os.path.join('data', 'y_test.csv')).values.ravel()
     
@@ -52,14 +46,12 @@ def final_test():
     if(scaler):
         std = StandardScaler()
         X_train = std.fit_transform(X_train)
-        X_unlabel = std.transform(X_unlabel)
         X_test = std.transform(X_test)
         
             
     if(pc):
         pca = PCA(n_components=0.99, random_state = seed)
         X_train = pca.fit_transform(X_train)
-        X_unlabel = pca.transform(X_unlabel)
         X_test = pca.transform(X_test)
         
             
@@ -67,14 +59,8 @@ def final_test():
         ros = RandomOverSampler(random_state = seed)
         X_train, y_train = ros.fit_resample(X_train, y_train)
     
-    X_semi = pd.concat([pd.DataFrame(X_train),
-                            pd.DataFrame(X_unlabel)],
-                           axis=0,
-                           ignore_index=True)
-    
-    y_semi = np.concatenate((y_train, y_unlabel))
                 
-    model.fit(X_semi, y_semi)
+    model.fit(X_train, y_train)
 
     total_scores = [log_loss(y_test, model.predict_proba(X_test)),
                     accuracy_score(np.array(y_test), model.predict(X_test))
@@ -136,12 +122,12 @@ def mccv_all_data():
             ros = RandomOverSampler(random_state = seed)
             X_train, y_train = ros.fit_resample(X_train, y_train)
     
-        pre_model.fit(X_train, y_train)
+        model.fit(X_train, y_train)
         
-        rows.append(build_row(X_test, y_test, pre_model.predict(X_test)))
+        rows.append(build_row(X_test, y_test, model.predict(X_test)))
      
-        total_score.append([log_loss(y_test, pre_model.predict_proba(X_test)),
-                     accuracy_score(np.array(y_test),pre_model.predict(X_test))
+        total_score.append([log_loss(y_test, model.predict_proba(X_test)),
+                     accuracy_score(np.array(y_test), model.predict(X_test))
                      ])
 
     return _results(rows, total_score, 'final_model_mccv_all_data', encoder),\
