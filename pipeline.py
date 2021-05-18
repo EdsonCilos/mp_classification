@@ -9,15 +9,10 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.dummy import DummyClassifier
-from sklearn.base import BaseEstimator, TransformerMixin
 
 #Imblearn modules
 from imblearn.over_sampling import RandomOverSampler
 from imblearn.pipeline import Pipeline 
-
-
-#Filter preprocessing
-from scipy.signal import savgol_filter
 
 #Config file
 import config
@@ -25,34 +20,16 @@ import config
 #Fix seed to reproducibility
 seed = config._seed() 
         
-class Savgol_transformer(BaseEstimator, TransformerMixin):
-
-    def __init__(self, window = 11, degree = 3):
-        assert window > degree, "window must be less than poly. degree"
-        self.window = window
-        self.degree = degree
-    
-    #Return self nothing else to do here    
-    def fit( self, X, y = None ):
-        return self 
-    
-    #Method that describes what we need this transformer to do
-    def transform(self, X, y = None ):
-        return savgol_filter(X, self.window, self.degree)
     
 def build_pipe(scaler = '', 
-               sav_filter = True,
+               baseline = True,
                pca = True, 
                over_sample = True):
     
-    prefix = ''
+    prefix = 'baseline_' if baseline else ''
     
     pre_pipe =[('estimator', DummyClassifier())]
-    
-    if sav_filter:
-        prefix += 'svfilter_'
-        pre_pipe.insert(-1, ('filter', 
-                             Savgol_transformer(window = 11, degree=3)))        
+       
     
     scaler_dictionary = {
         'std' : StandardScaler(), 
@@ -91,10 +68,10 @@ def pipe_config(file_name):
     except:
         scaler = ''
     
-    sav_filter = True if 'svfilter' in values else False
+    baseline = True if 'baseline' in values else False
     pca = True if 'pca' in values else False
     over_sample = True if 'over' in values else False
     
-    return sav_filter, scaler, pca, over_sample
+    return baseline, scaler, pca, over_sample
   
     
