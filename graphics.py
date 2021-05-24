@@ -23,6 +23,7 @@ import seaborn as sns
 from utils import classes_names
 from table import best_results
 from config import _mccv_path
+from baseline import als
 
 
 #Still beta, several updates required!
@@ -32,6 +33,34 @@ best_path = os.path.join('results', 'mccv', 'pca_over_SVC_linear_10.0',
                     'detailed_score.csv')
 
 mccv_path = _mccv_path()
+
+#Experimental module
+def random_comparison():
+    d4 = pd.read_csv(os.path.join('data', 'D4_4_publication.csv'))
+    d4_rebuild = pd.read_csv(os.path.join('data', 'd4_rebuild.csv'))
+    
+    raw_sample = d4_rebuild.sample(n=1)
+    
+    sample = d4[d4['Nom '] == raw_sample['Nom '].values[0]]
+    raw_sample.drop(['Nom ', 'Interpretation '], axis = 1, inplace=True)
+    sample.drop(['Nom ', 'Interpretation '], axis = 1, inplace=True)
+    sample = sample.iloc[0, :].copy()
+    
+    horizontal = [int(x.split('.')[0]) for x in sample.index.values]
+    plt.plot(horizontal, raw_sample.values[0], 'r')
+    #plt.plot(horizontal, sample.values, 'b')
+    plt.plot(horizontal, raw_sample.values[0] - als(raw_sample.values[0]), 'g')
+
+    
+    plt.show()
+    
+    
+def plot_sample(sample):
+    horizontal = [int(x.split('.')[0]) for x in sample.columns.values]
+    values = sample.values[0]
+    plt.plot(horizontal, values, 'r')
+    plt.plot(horizontal, values - als(values), 'b')
+    plt.show()
 
 def qq_plot(data):
     return qq(data, line='s')
@@ -178,8 +207,6 @@ def self_heatmap():
                 dpi = 1200,)
     
     
-    
-
 def best_model_results(model_name = 'pca_over_SVC_linear_10.0'):
     
     path = os.path.join(mccv_path, model_name)

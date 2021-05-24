@@ -26,6 +26,8 @@ import config
 
 seed = config._seed()
 
+
+
 def search(scaler = '', 
            baseline = True,
            pca = True, 
@@ -139,4 +141,6 @@ def append_time(file_name, time):
             file_object.write("\n")
         file_object.write("{},{}".format(file_name, time))
 
-        
+#Main function stablished
+if __name__ == "__main__":
+    run_gs()

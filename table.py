@@ -76,10 +76,10 @@ def best_results():
 
     models = {}
     
-    for scaler, pca, over, nn in product([False, True], repeat = 4):
+    for scaler, baseline, pca, over, nn in product([False, True], repeat = 5):
         
         file_name = f_name(nn=nn,
-                           sv_filter= False, 
+                           baseline = baseline, 
                            scaler=scaler, 
                            pca= pca, 
                            over_sample= over)
@@ -96,13 +96,16 @@ def best_results():
                 row = df.iloc[0]
                 
                 if 'NN' in models:
-                    if models['NN'][3] <= -row["neg_log_loss"]: 
+                    if models['NN'][4] <= -row["neg_log_loss"]: 
                         replace=False
                             
                 if replace:
                     
-                    models['NN'] = [int(scaler), int(pca),
-                                    int(over), -row["neg_log_loss"], 
+                    models['NN'] = [int(baseline),
+                                    int(scaler), 
+                                    int(pca),
+                                    int(over), 
+                                    -row["neg_log_loss"], 
                                     row["std"]]
                     
                     estimator_path['NN'] = file_path
@@ -116,12 +119,13 @@ def best_results():
                     replace = True
                     
                     if classical_models[key] in models:
-                        if (models[classical_models[key]][3]
+                        if (models[classical_models[key]][4]
                             <= -row["neg_log_loss"]): 
                             replace=False           
                             
                     if replace:
-                        models[classical_models[key]] = [int(scaler),
+                        models[classical_models[key]] = [int(baseline),
+                                                         int(scaler),
                                                          int(pca),
                                                          int(over),
                                                          -row["neg_log_loss"], 
@@ -139,7 +143,8 @@ def best_results():
         idxs.append(key)
         
     df = pd.DataFrame(data = data, 
-                        columns = ["Standard scaler",
+                        columns = ["Baseline",
+                                   "Standard scaler",
                                    "PCA (99%)",
                                    "Over sample",
                                    "Log-loss", 
