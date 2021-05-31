@@ -11,22 +11,26 @@ import numpy as np
 import os
 from os import path
 from sklearn.model_selection import train_test_split
-from scipy.signal import savgol_filter
 from sklearn.preprocessing import StandardScaler 
 from sklearn.decomposition import PCA
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import log_loss
-from sklearn.svm import SVC 
-from sklearn.linear_model import LogisticRegression
+
 from sklearn.base import clone
 from timeit import default_timer as timer
 
+#sklearn models
+from sklearn.svm import SVC 
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
+
 #load project modules
+import config
 from param_grid import build_nn
-from grid_search import append_time
-from utils import build_row
-from config import _mccv_path
+from utils import append_time, build_row
+from baseline import als
 
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import EarlyStopping
@@ -37,7 +41,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 #Beta version!
 
-mccv_path = _mccv_path()
+mccv_path = config._get_path('mccv')
 
 def results_total(X, name, sufix, temp=True): #Arrumar!
  
@@ -66,8 +70,16 @@ while(do):
     
     simulate = False
     
-    print("Choose an option: \n \n 0 - Leave \n 1- SVC \n 2 - LR \n 3 - NN \n")
+    print("Choose an option: \n")
+    print("0 - Leave")
+    print("1 - Neural Network")
+    print("2 - Support Vector Machine")
+    print("3 - Logistic Regression")
+    print("4 - RandomForest")
+    print("5 - k-nearest neighbors")
     n= int(input("input: "))
+    
+    print("")
     
     base_model = None
     
@@ -77,7 +89,7 @@ while(do):
         input("Press any key to finish...")
         break
     
-    elif(n == 1):
+    elif(n == 2):
         
         print("Support Vector Machine selected")
         kernel = input("Type the kernel name: ")
@@ -86,9 +98,9 @@ while(do):
         name =  "_".join(["SVC", kernel, str(c)])
         simulate = True
         
-    elif(n == 2):
+    elif(n == 3):
         
-         print("Logistic Regression selected \n")
+         print("Logistic Regression selected")
          c = float(input("Type the regularization parameter C: "))
          
          base_model = LogisticRegression(C=c, solver='newton-cg')
@@ -96,13 +108,38 @@ while(do):
          name =  "_".join(["LR", str(c)])
          simulate = True
          
-    elif(n == 3):
+    elif(n == 4):
         
-         print("Neural Network Selected selected \n")
-         layers = int(input("Type the number of hidden layers: \n"))
-         neurons = int(input("Type the number of neurons: \n"))
-         momentum = float(input("Momentum value: \n"))
-         lr = float(input("Learning rate: \n"))
+         print("RandomForest selected")
+         n_tree = int(input("Type the number of trees: "))
+         
+         base_model = RandomForestClassifier(n_estimators = n_tree, 
+                                             criterion = 'entropy')
+
+         name =  "_".join(["RF", str(n_tree)])
+         simulate = True
+         
+    elif(n == 5):
+        
+         print("K-NN selected")
+         n_neighbors = int(input("Type the number of neighbors: "))
+         p = float(input("K-NN p: "))
+         
+         base_model = KNeighborsClassifier(n_neighbors = n_neighbors,
+                                           weights = 'distance',
+                                           p = p)
+
+         name =  "_".join(["KNN", str(n_neighbors), str(p)])
+         simulate = True
+        
+         
+    elif(n == 1):
+        
+         print("Neural Network Selected selected")
+         layers = int(input("Type the number of hidden layers: "))
+         neurons = int(input("Type the number of neurons: "))
+         momentum = float(input("Momentum value: "))
+         lr = float(input("Learning rate: "))
          m = int(input("Select the activation function: \n 1 - Sigmoid \n \n 2 - Tanh \n"))
          
          activation = ''
@@ -148,19 +185,19 @@ while(do):
         
     if(simulate):
         
-        sv_filter = bool(int(input(
-            "Use Savitzky-Golay filter? (0 - no, 1 - yes) \n")))
+        baseline = bool(int(input(
+            "Use baseline correction? (0 - no, 1 - yes) \n")))
         pca = bool(int(input("Use pca?  (0 - no, 1 - yes) \n")))
         over = bool(int(input("Use Oversample?  (0 - no, 1 - yes) \n")))
         std = bool(int(input("Use Standard Scaler?  (0 - no, 1 - yes) \n")))
         
         prefix = 'nn_' if n == 3 else ''
-        sv = 'svfilter_' if sv_filter else '' 
+        bs = 'baseline_' if baseline else '' 
         sc = 'std_' if std else ''
         pc = 'pca_' if pca else ''
         ov = 'over_' if over else ''
         
-        name = prefix + sv + sc +  pc + ov + name
+        name = prefix + bs + sc +  pc + ov + name
         
         print('Simulation {}'.format(name))
         
@@ -178,8 +215,17 @@ while(do):
         train_path = os.path.join('data', 'X_train.csv')
         X_train_temp= pd.read_csv(train_path) 
         
+        if(baseline):
+            print('Applying baseline correction...')
+            for idx, row in X_train_temp.iterrows():
+                X_train_temp.iloc[idx, :] = row - als(row)
+            
+        
         train_path = os.path.join('data', 'y_train.csv')
         y_train_temp= pd.read_csv(train_path).values.ravel()
+        
+        
+            
         
         b = False
         
@@ -257,10 +303,6 @@ while(do):
                                                       y_train_temp,
                                                       stratify=y_train_temp, 
                                                       test_size= 1/3)
-    
-            if(sv_filter):
-                X_train = savgol_filter(X_train, 11, 3)
-                X_val = savgol_filter(X_val, 11, 3)
                 
             if(std):
                 scaler = StandardScaler()
