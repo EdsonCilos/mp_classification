@@ -12,6 +12,8 @@ from itertools import product
 #Project packages
 from utils import file_name as f_name
 
+import config
+
 classical_models = {'SVC' : 'SVC', 
               'RandomForestClassifier' : 'RF', 
               'LogisticRegression' : 'LR', 
@@ -34,7 +36,7 @@ def best_results():
                            pca= pca, 
                            over_sample= over)
         
-        file_path = os.path.join(os.getcwd(), 'results', file_name)
+        file_path = os.path.join(config._get_path('grid_search'), file_name)
         
         if os.path.isfile(file_path):
             
