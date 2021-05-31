@@ -11,7 +11,6 @@ from itertools import product
 
 #Project packages
 from utils import file_name as f_name
-from pipeline import pipe_config
 
 classical_models = {'SVC' : 'SVC', 
               'RandomForestClassifier' : 'RF', 
@@ -20,55 +19,6 @@ classical_models = {'SVC' : 'SVC',
               'DecisionTreeClassifier' : 'DT',
               'GaussianNB' : 'GB'}
 
-def filter_results():
-    
-    df, estimator_path = best_results()
-    
-    log_loss = []
-    models = []
-    
-    for model in estimator_path:
-        
-        _,scaler,pca,ov = pipe_config(os.path.basename(estimator_path[model]))
-        
-        file_name = f_name(nn = True if model == 'NN' else False, 
-                           sv_filter = False, 
-                           scaler = scaler, 
-                           pca = pca, 
-                           over_sample = ov)
-                
-        ft_file_name = 'ft_{}_'.format(model)  + f_name(nn = False,
-                                                        sv_filter = True, 
-                                                        scaler = scaler, 
-                                                        pca = pca, 
-                                                        over_sample = ov)
-        
-
-        file_path = os.path.join('results', file_name)
-        ft_file_path = os.path.join('results', ft_file_name)
-        
-        df = pd.read_csv(file_path)
-        ft_df = pd.read_csv(ft_file_path)
-        
-        row = df.iloc[0] if model == 'NN' else next(
-                r  for _, r  in df.iterrows() if model in r['estimator'])
-    
-        ft_row = ft_df.iloc[0]
-        
-        log_loss.append([-row["neg_log_loss"], -ft_row["neg_log_loss"]])
-        
-        model_name = 'NN' if model == 'NN' else classical_models[model]
-        models.append(model_name)
-            
-    result = pd.DataFrame(data = log_loss, 
-                          columns = ["No filter", 
-                                     "Best Savitzky–Golay filter"],
-                          index = models)
-    
-    result.sort_values(by = ["No filter"], inplace = True)
-        
-    return result
-            
     
 def best_results():
     
