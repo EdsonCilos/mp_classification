@@ -20,9 +20,9 @@ from matplotlib.colors import ListedColormap
 import seaborn as sns
 
 #Project packages
+import config
 from utils import classes_names
 from table import best_results
-from config import _mccv_path
 from baseline import als
 
 
@@ -32,7 +32,8 @@ from baseline import als
 best_path = os.path.join('results', 'mccv', 'pca_over_SVC_linear_10.0', 
                     'detailed_score.csv')
 
-mccv_path = _mccv_path()
+mccv_path = config._get_path('mccv')
+graphics_path = config._get_path('graphics')
 
 #Experimental module
 def random_comparison():
@@ -85,7 +86,7 @@ def gs_heatmap(output_name = 'gs_table'):
 
     ax.set_title('Grid Search')
     
-    fig.savefig(os.path.join('results', output_name + '.png'),
+    fig.savefig(os.path.join(graphics_path, output_name + '.png'),
                 dpi = 1200, 
                 bbox_inches = "tight")
         
@@ -102,7 +103,7 @@ def _total_score_plot(name_list, main_name):
 
     for name in name_list:
         
-        df = pd.read_csv(os.path.join(mccv_path, name,'total_score.csv'))
+        df = pd.read_csv(os.path.join(mccv_path, name, 'total_score.csv'))
         
         std = np.std(df[df.columns[1]])
         mean = np.mean(df[df.columns[1]])
@@ -136,7 +137,7 @@ def total_score_plot(df_tuples, name):
 
     fig = plot.get_figure()
     
-    fig.savefig(os.path.join('results', name + '_cross_entropy.png'), 
+    fig.savefig(os.path.join(graphics_path, name + '_cross_entropy.png'), 
                 dpi = 1200,
                 bbox_inches = "tight")
     
@@ -155,7 +156,7 @@ def total_score_plot(df_tuples, name):
 
     fig = plot.get_figure()
     
-    fig.savefig(os.path.join('results', name + '_accuracy.png'),
+    fig.savefig(os.path.join(graphics_path, name + '_accuracy.png'),
                 dpi = 1200,
                 bbox_inches = "tight")
     
@@ -203,7 +204,7 @@ def self_heatmap():
 
     
     ax.set_title('SelfTraining Table (5-fold cross validation)')
-    fig.savefig(os.path.join('results', 'SelfTraining_table.png'),
+    fig.savefig(os.path.join(graphics_path, 'SelfTraining_table.png'),
                 dpi = 1200,)
     
     
@@ -232,7 +233,7 @@ def probability_heatmap(df, name):
     fig, ax = plt.subplots(figsize=(12, 7))
     sns.heatmap(prob_frame, annot=True, linewidths= 1, cmap="YlGnBu", ax = ax)
     ax.set_title('True class v.s. Predicted Probability Class')
-    fig.savefig(os.path.join('results', name + '_probability.png'),
+    fig.savefig(os.path.join(graphics_path, name + '_probability.png'),
                 dpi = 1200,
                 bbox_inches = "tight")
     
@@ -253,7 +254,7 @@ def cross_heatmap(df, name):
     sns.heatmap(cross_frame, annot=True, linewidths= 1, cmap="YlGnBu", ax = ax)
     ax.set_title('True class v.s. Predicted Class (mean)')
     
-    fig.savefig(os.path.join('results', name + '_cross_prediction.png'),
+    fig.savefig(os.path.join(graphics_path, name + '_cross_prediction.png'),
                 dpi = 1200,
                 bbox_inches = "tight")
 
@@ -280,7 +281,7 @@ def detailed_score_heatmap(df, name):
     
     ax.set_title(name + ' Scores')
 
-    fig.savefig(os.path.join('results', name + '_detailed_score.png'),
+    fig.savefig(os.path.join(graphics_path, name + '_detailed_score.png'),
                 dpi = 1200,
                 bbox_inches = "tight")
     
@@ -345,7 +346,7 @@ def final_table():
     sns.heatmap(df,
                 annot=True, linewidths= 0.05, cmap='YlGnBu', ax = ax)
     
-    fig.savefig(os.path.join('results', 'sensitivity_final_table.png'),
+    fig.savefig(os.path.join(graphics_path, 'sensitivity_final_table.png'),
                 dpi = 1200,
                 bbox_inches = "tight")
 
