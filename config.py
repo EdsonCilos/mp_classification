@@ -6,14 +6,25 @@ Created on Tue Apr 13 21:37:51 2021
 """
 import os
 
-seed = 0
-scalers = ['std']
+
+path_dic = {
+    'mccv': os.path.join('results', 'mccv'),
+    'grid_search': os.path.join('results', 'grid_search'),
+    'graphics' : os.path.join('results', 'graphics')
+    }
 
 def _seed():
-    return seed
+    return 0
 
 def _scaler_list():
-    return scalers
+    return ['std']
 
-def _mccv_path():
-    return os.path.join('results', 'mccv')
+def _get_path(name):
+    
+    folder_path = path_dic[name]
+
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        
+    return folder_path
+    
