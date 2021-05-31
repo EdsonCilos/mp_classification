@@ -1,5 +1,0 @@
-name,base_path,time,amount_labaled,accuracy,log_loss,std_log_loss
-SVC_linear,pca_over_gs.csv,253.184,2384.4,0.8941,0.3879,0.0504
-LogisticRegression,std_pca_gs.csv,1241.2818,2622.4,0.8844,0.4586,0.1007
-SVC,over_gs.csv,3621.0603,2636.8,0.8844,0.3573,0.0757
-NN,nn_std_pca_over_gs.csv,904.0633,3140.2,0.876,0.4242,0.0968

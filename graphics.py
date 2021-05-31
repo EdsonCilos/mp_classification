@@ -29,7 +29,7 @@ from baseline import als
 #Still beta, several updates required!
 
 #Best model path: 
-best_path = os.path.join('results', 'mccv', 'pca_over_SVC_linear_10.0', 
+best_path = os.path.join('results', 'mccv', 'baseline_over_SVC_linear_100.0', 
                     'detailed_score.csv')
 
 mccv_path = config._get_path('mccv')
@@ -326,8 +326,8 @@ def final_table():
         
     #Load model's sensitivity mccv data (using Kedzierski et. al methodology)
     df1 = pd.read_csv(os.path.join('results', 
-                                  'final_model_mccv_all_data_detailed_score.csv'),
-                      index_col=0)
+                                  'final_model_mccv_all_data_detailed_score.csv')
+                      )
                                        
     w1 = df1.mean(axis=0).values.reshape(classes, 4)
     w1 = np.around(w1, decimals=3)[:, 0]
