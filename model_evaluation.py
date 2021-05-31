@@ -16,32 +16,51 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import log_loss
 from sklearn.metrics import accuracy_score
 from sklearn.decomposition import PCA
+from sklearn.base import clone
 from sklearn.svm import SVC
 
 #Project modules
 from utils import build_row, load_encoder
+from baseline import als
 import graphics
 import config
+from param_grid import build_nn
+
+
+#Tensoflow
+from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
+from tensorflow.keras.callbacks import EarlyStopping
 
 #Fix the seed of the evaluation
 seed = config._seed()
 
-#Selected model: SelfTraining + SVC + pca + oversample
-model = SVC(kernel='linear', C = 10, probability = True, random_state = 0)
+#Selected model: SVC + pca + oversample
+base_model = SVC(kernel = 'linear', C = 100, probability = True, 
+                 random_state= 0)
+            
+baseline= True
 scaler = False
-pc = True
+pc = False
 over_sample = True
                         
 def final_test():
     
-    
+    model = clone(base_model)
     X_train = pd.read_csv(os.path.join('data', 'X_train.csv')) 
     y_train = pd.read_csv(os.path.join('data', 'y_train.csv')).values.ravel()
     
+   
         
     X_test = pd.read_csv(os.path.join('data', 'X_test.csv')) 
     y_test = pd.read_csv(os.path.join('data', 'y_test.csv')).values.ravel()
     
+    if(baseline):
+        print('Applying baseline correction...')
+        for idx, row in X_train.iterrows():
+            X_train.iloc[idx, :] = row - als(row)
+        for idx, row in X_test.iterrows():
+            X_test.iloc[idx, :] = row - als(row)
+            
 
     if(scaler):
         std = StandardScaler()
@@ -95,7 +114,7 @@ def mccv_all_data():
 
     #(X,y) is our labeled sample
     X = dataset.drop(["label"], axis = 1)
-    y = dataset["label"].copy()    
+    y = dataset["label"].copy()
     
     rows = []
     
@@ -105,6 +124,8 @@ def mccv_all_data():
     for j in range(1000):
         
         print("Iteration number: " + str(j) + "--------- final model")
+        
+        model = clone(base_model)
      
         X_train, X_test, y_train, y_test = train_test_split(X, y, 
                                                        stratify=y, 
