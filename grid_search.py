@@ -17,6 +17,7 @@ from sklearn.model_selection import StratifiedKFold
 
 #Project modules
 from utils import file_name as f_name
+from utils import append_time
 from param_grid import neural_grid, classical_grid
 from pipeline import build_pipe
 from baseline import als
@@ -25,8 +26,7 @@ from baseline import als
 import config
 
 seed = config._seed()
-
-
+gs_folder = config._get_path('grid_search')
 
 def search(scaler = '', 
            baseline = True,
@@ -79,13 +79,7 @@ def search(scaler = '',
     results.sort_values(by=['neg_log_loss'], ascending=False, inplace=True)
     
     if save:
-        
-        folder = os.path.join('results')
-    
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-            
-        final_path = os.path.join(folder, file_name)        
+        final_path = os.path.join(gs_folder, file_name)        
         print('Search is finished, saving results in ' + final_path)
         results.to_csv(final_path, index = False)
     
@@ -107,13 +101,8 @@ def run_gs():
                            scaler=scaler, 
                            pca= pca, 
                            over_sample= over)
-        
-        folder = os.path.join('results')
     
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-            
-        file_path = os.path.join(folder, file_name)
+        file_path = os.path.join(gs_folder, file_name)
         
         if os.path.isfile(file_path):
             print(file_name + " already exists, iteration was skipped ...")
@@ -132,15 +121,6 @@ def run_gs():
             append_time(file_name, str(end - start))
             
     print("GridSearch fully finished...")
-    
-def append_time(file_name, time):
-    with open(os.path.join('results', "time.csv"), "a+") as file_object:
-        file_object.seek(0)
-        data = file_object.read(100)
-        if len(data) > 0 :
-            file_object.write("\n")
-        file_object.write("{},{}".format(file_name, time))
 
-#Main function stablished
 if __name__ == "__main__":
     run_gs()

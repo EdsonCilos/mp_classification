@@ -59,8 +59,15 @@ def file_name(nn = False, baseline=False, scaler=False,
 def load_encoder():
     return pickle.load(open(os.path.join('data', 'enconder.sav'), 'rb'))
 
-
 def classes_names():
     encoder =load_encoder()
     classes = len(encoder.classes_)
     return encoder.inverse_transform([i for i in range(classes)]), classes
+
+def append_time(file_name, time):
+    with open(os.path.join('results', "time.csv"), "a+") as file_object:
+        file_object.seek(0)
+        data = file_object.read(100)
+        if len(data) > 0 :
+            file_object.write("\n")
+        file_object.write("{},{}".format(file_name, time))
