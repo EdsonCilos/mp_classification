@@ -236,7 +236,8 @@ def probability_heatmap(df, name):
     fig.savefig(os.path.join(graphics_path, name + '_probability.png'),
                 dpi = 1200,
                 bbox_inches = "tight")
-    
+
+        
 def cross_heatmap(df, name):
     
     names, classes = classes_names()
@@ -257,6 +258,17 @@ def cross_heatmap(df, name):
     fig.savefig(os.path.join(graphics_path, name + '_cross_prediction.png'),
                 dpi = 1200,
                 bbox_inches = "tight")
+    
+def mccv_detailed_score_heatmap():    
+    
+    models = mccv_files()
+
+    for model_name in models:
+        
+        df = pd.read_csv(os.path.join(mccv_path,model_name,
+                                      'detailed_score.csv'))
+    
+        detailed_score_heatmap(df, model_name)    
 
 def detailed_score_heatmap(df, name):
   
