@@ -208,7 +208,7 @@ def self_heatmap():
                 dpi = 1200,)
     
     
-def best_model_results(model_name = 'pca_over_SVC_linear_10.0'):
+def best_model_results(model_name = 'baseline_over_SVC_linear_100.0'):
     
     path = os.path.join(mccv_path, model_name)
     
