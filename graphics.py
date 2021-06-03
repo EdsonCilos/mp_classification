@@ -212,13 +212,14 @@ def best_model_results(model_name = 'baseline_over_SVC_linear_100.0'):
     
     path = os.path.join(mccv_path, model_name)
     
-    probability_heatmap(pd.read_csv(os.path.join(path, 'probability.csv')),
+    probability_heatmap(pd.read_csv(os.path.join(path,'probability.csv')),
                         model_name)
     
-    cross_heatmap(pd.read_csv(os.path.join(path, 'cross_matrix.csv')),
+    cross_heatmap(pd.read_csv(os.path.join(path,'cross_matrix.csv')),
                   model_name)
     
-    detailed_score_heatmap(pd.read_csv(os.path.join(path, 'detailed_score.csv')),
+    detailed_score_heatmap(pd.read_csv(os.path.join(path,
+                                                    'detailed_score.csv')),
                            model_name)
     
 def probability_heatmap(df, name):
