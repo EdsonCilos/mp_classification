@@ -15,7 +15,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 #Graphics packages
 from matplotlib import pyplot as plt
-from statsmodels.graphics.gofplots import qqplot as qq
 from matplotlib.colors import ListedColormap
 import seaborn as sns
 
@@ -55,7 +54,7 @@ def random_comparison():
     
     plt.show()
     
-    
+
 def plot_sample(sample):
     horizontal = [int(x.split('.')[0]) for x in sample.columns.values]
     values = sample.values[0]
@@ -63,8 +62,6 @@ def plot_sample(sample):
     plt.plot(horizontal, values - als(values), 'b')
     plt.show()
 
-def qq_plot(data):
-    return qq(data, line='s')
 
 def gs_heatmap(output_name = 'gs_table'):
     

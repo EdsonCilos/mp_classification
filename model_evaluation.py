@@ -24,19 +24,13 @@ from utils import build_row, load_encoder
 from baseline import als
 import graphics
 import config
-from param_grid import build_nn
-
-
-#Tensoflow
-from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-from tensorflow.keras.callbacks import EarlyStopping
 
 #Fix the seed of the evaluation
 seed = config._seed()
 
 #Selected model: SVC + pca + oversample
 base_model = SVC(kernel = 'linear', C = 100, probability = True, 
-                 random_state= 0)
+                 random_state= seed)
             
 baseline= True
 scaler = False
