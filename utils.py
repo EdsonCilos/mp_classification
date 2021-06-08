@@ -3,29 +3,12 @@
 """
 Created on Thu Aug 20 10:30:23 2020
 
-@author: edson
+@author: Edson Cilos
 """
 import os
 import numpy as np
 import pickle
 from sklearn.metrics import multilabel_confusion_matrix
-from sklearn.base import BaseEstimator, TransformerMixin
-from scipy.signal import savgol_filter
-
-class Savgol_transformer(BaseEstimator, TransformerMixin):
-
-    def __init__(self, window, degree):
-        assert window > degree, "window must be less than poly. degree"
-        self.window = window
-        self.degree = degree
-    
-    #Return self nothing else to do here    
-    def fit( self, X, y = None ):
-        return self 
-    
-    #Method that describes what we need this transformer to do
-    def transform(self, X, y = None ):
-        return savgol_filter(X, self.window, self.degree)
     
 def sensitivity(matrix):
   return matrix[1,1]/(matrix[1,1] + matrix[1,0])
@@ -62,28 +45,29 @@ def build_row(X_test, y_test, y_pred):
   
     return result        
 
-def Remove_less_representative(dataset, remove_n):
-
-  less_rep = dataset["label"].value_counts()
-
-  assert less_rep.shape[0] > remove_n, \
-  f"There are {less_rep.shape[0]} classes, \
-  not possible remove {remove_n} of them"
-
-  less_rep = less_rep[less_rep.shape[0] - remove_n:]
-
-  remove_idxs = [i for i, row in dataset.iterrows() 
-  if row["label"] in less_rep.index]
-
-  new_dataset = dataset.drop(index=remove_idxs, axis=0, inplace=False)
-
-  return new_dataset
+def file_name(nn = False, baseline=False, scaler=False, 
+              pca=False, over_sample=False):
+    
+    prefix = 'nn_' if nn else ''
+    sc = 'std_' if scaler else ''
+    baseline = 'baseline_' if baseline else '' 
+    pc = 'pca_' if pca else ''
+    ov = 'over_' if over_sample else ''
+    
+    return  prefix + baseline + sc +  pc + ov + 'gs.csv'
 
 def load_encoder():
     return pickle.load(open(os.path.join('data', 'enconder.sav'), 'rb'))
-
 
 def classes_names():
     encoder =load_encoder()
     classes = len(encoder.classes_)
     return encoder.inverse_transform([i for i in range(classes)]), classes
+
+def append_time(file_name, time):
+    with open(os.path.join('results', "time.csv"), "a+") as file_object:
+        file_object.seek(0)
+        data = file_object.read(100)
+        if len(data) > 0 :
+            file_object.write("\n")
+        file_object.write("{},{}".format(file_name, time))
