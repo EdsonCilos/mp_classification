@@ -55,7 +55,7 @@ def results_total(X, name, sufix, temp=True): #Arrumar!
                                   'Accuracy_val']).to_csv(filepath,index=False)
 
 def results(X, name, sufix, temp=True):
-    3
+    
     posfix = '_temp' if temp else '' 
     
     filepath = os.path.join(mccv_path, name, sufix + posfix + '.csv')

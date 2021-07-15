@@ -29,3 +29,8 @@ def _get_path(name):
         
     return folder_path
     
+def _blue():
+    return (1/255,209/255,209/255)
+
+def _purple():
+    return (90/255, 53/255, 182/255)

@@ -3,3 +3,4 @@
 __pycache__
 results/graphics/labeling
 data/baseline_unlabeled_data.csv
+data/new_sample.csv

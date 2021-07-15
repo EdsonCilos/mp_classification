@@ -23,6 +23,7 @@ purple = (90/255, 53/255, 182/255)
 
 """
 Beta version!
+This module must be uncoupled from baseline correction!
 """
 
 def test(top_models = 3):
